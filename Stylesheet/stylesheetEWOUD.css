@@ -9,10 +9,10 @@ html {background-color: black}
 
 .outline {/* Rectangle 8 */
     position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 17px;
-    top: 18px;
+    width: 97%;
+    height: 97%;
+    left: 2%;
+    top: 2%;
     
     background: #F8C232;
     border-radius: 20px;
