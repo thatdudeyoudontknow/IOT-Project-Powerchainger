@@ -1,0 +1,42 @@
+/* Algemene style sheet */
+
+html, head, body, div, h1, p {
+    margin: 0;padding: 0;
+    font-family: monospace;
+
+}
+
+.outline {/* Rectangle 8 */
+    position: absolute;
+    width: 1694px;
+    height: 1080px;
+    left: 17px;
+    top: 18px;
+    
+    background: #F8C232;
+    border-radius: 20px;
+}
+
+.logo {/* powerchainger-logo 2 */
+
+    position: absolute;
+    width: 214px;
+    height: 105px;
+    left: 40px;
+    top: 31px;
+    
+}
+
+.top{/* Rectangle 10 */
+
+
+    position: absolute;
+    width: 1416px;
+    height: 105px;
+    left: 271px;
+    top: 29px;
+    
+    background: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
