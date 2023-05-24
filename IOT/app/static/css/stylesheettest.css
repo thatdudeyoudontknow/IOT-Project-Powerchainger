@@ -34,6 +34,10 @@ body {
     margin-top: 2.5em;
 }
 
+.logo1 {
+    left: 10%;
+}
+
 
 
 .top{/* Rectangle 10 */
@@ -41,8 +45,8 @@ body {
     position: relative;
     width: 61%;
     height: 7%;
-    left: 7.5%;
-    top: -6%;
+    left: 15%;
+    top: -11%;
     right: 30%;
 
     background: #F4F4F4;
