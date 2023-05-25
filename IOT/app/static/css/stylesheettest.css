@@ -43,10 +43,10 @@ body {
 .searchbar{
 
     position: relative;
-    width: 20%;
-    height: 20%;
-    left: 75%;
-    top: 42%;
+    width: 50%;
+    height: 35%;
+    left: 45%;
+    top: 30%;
     
     background: #F4F4F4;
     border: 0.5px solid #000000;
