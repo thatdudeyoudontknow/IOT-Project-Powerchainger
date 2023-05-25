@@ -2,15 +2,19 @@ from app import app
 from flask import render_template
 
 
-@app.route("/")
-def homepage():
+@app.route("/login")
+def login():
     return render_template("public/login.html")
 
 
 @app.route("/home")
-def test1():
+def home():
     return render_template("public/home.html")
 
 @app.route("/competitie")
-def test():
+def competitie():
     return render_template("public/competitie.html")
+
+@app.route("/bezuinigen")
+def bezuinigen():
+    return render_template("public/bezuinigen.html")
