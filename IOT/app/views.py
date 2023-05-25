@@ -18,3 +18,7 @@ def competitie():
 @app.route("/bezuinigen")
 def bezuinigen():
     return render_template("public/bezuinigen.html")
+
+@app.route("/graph")
+def graph():
+    return render_template("public/graph.html")
