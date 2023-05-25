@@ -1,0 +1,12 @@
+"{%extends "public/templates/iot_template.html"%}
+
+
+{%block main%}
+              HIER NEERZETTEN!
+            <div class="container" style="position: absolute; top: 20%; left: 10%;">
+              <iframe class="media" src="{{ url_for('graph') }}" width="600" height="550"></iframe>
+            </div>
+
+
+
+{%endblock%}

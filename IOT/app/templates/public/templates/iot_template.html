@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+  <head>
+    <link type="text/css" href="{{url_for('static',filename='css/stylesheettest.css')}}" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  </head>
+  <body>
+    <div class="outline">
+      <img class="logo" src="https://www.powerchainger.nl/wp-content/uploads/powerchainger-logo.svg">
+    <div class="top">
+    </div>
+      <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+        <div class="collapse navbar-collapse" id="navbarNav">
+          <ul class="navbar-nav">
+            <li class="nav-item">
+              <a class="nav-link" href="/home">Home </a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/competitie">Competitie</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="/">Login</a>
+            </li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <main>
+      {%block main%}{%endblock%}
+    </main>
+  </body>
+
+</html>

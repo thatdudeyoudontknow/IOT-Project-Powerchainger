@@ -90,4 +90,70 @@ html {background-color: black}
     background: #F4F4F4;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
+<<<<<<< Updated upstream:Stylesheet/stylesheetEWOUD.css
 }
+=======
+}
+
+.circle {
+	width: 90%;
+	height: 90%;
+	-moz-border-radius: 50%;
+	-webkit-border-radius: 50%;
+	border-radius: 25px;
+	overflow:hidden;
+	position:relative;
+}
+
+.media{
+    -webkit-box-shadow: 10px 10px 61px 6px rgba(0,0,0,0.75);
+    -moz-box-shadow: 10px 10px 61px 6px rgba(0,0,0,0.75);
+    box-shadow: 10px 10px 61px 6px rgba(0,0,0,0.75);
+}
+  
+  .container:before {
+    content: '';
+    z-index: 2;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    -webkit-box-shadow: 0 0 0 7px rgba(0,0,0,0.75);
+    -moz-box-shadow: 0 0 0 7px rgba(0,0,0,0.75);
+    box-shadow: 0 0 0 10px rgba(0,0,0,0.75);
+  /*   box-shadow: 0px 0px 61px 6px rgba(0,0,0,0.68); */
+    pointer-events: none;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    border-radius: 20px;
+}
+
+.navbar-nav {
+    display: flex;
+
+      /* home */
+
+    
+    position: absolute;
+    width: 35%;
+    height: 50%;
+    left: 20%;
+    top: 2%;
+
+font-family: 'Noto Sans';
+font-style: normal;
+font-weight: 600;
+font-size: 32px;
+line-height: 44px;
+text-align: center;
+
+color: rgba(0, 0, 0, 0.67);
+
+
+  }
+  
+  .nav-item {
+    margin-right: 3rem;
+  }
+  
+
+>>>>>>> Stashed changes:IOT/app/static/css/stylesheettest.css
