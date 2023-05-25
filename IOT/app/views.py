@@ -1,7 +1,6 @@
 from app import app
 from flask import render_template
 
-
 @app.route("/login")
 def login():
     return render_template("public/login.html")
@@ -22,3 +21,4 @@ def bezuinigen():
 @app.route("/graph")
 def graph():
     return render_template("public/graph.html")
+
