@@ -75,10 +75,11 @@ body {
     height: 7%;
     left: 78%;
     top: -19.3%;
-    
+    text-align: center;
     background: #F4F4F4;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;   
+    align-content: center;
 }
 
 li {
@@ -111,3 +112,4 @@ li a {
 #navbarNav li:not(:first-child):before {
     content: " | ";
 }
+

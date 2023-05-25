@@ -20,9 +20,9 @@
                 <div class="collapse navbar-collapse" id="navbarNav">
                   <div id ="navigation">
                     <ul>
-                      <li><a href="#home">home</a></li>
-                      <li><a href="#competitie">competitie</a></li>
-                      <li><a href="#bezuiningen">bezuinigen</a></li>
+                      <li><a href="{{url_for('home')}}">home</a></li>
+                      <li><a href="{{url_for('competitie')}}">competitie</a></li>
+                      <li><a href="{{url_for('bezuinigen')}}">bezuinigen</a></li>
                     </ul>
                   </div>
                 </div>
@@ -33,7 +33,7 @@
               <div class="inlog" id="navbarNav">
 
                 <ul>
-                  <li><a href="#login">login</a></li>
+                  <li><a class="button" href="{{url_for('login')}}">login</a></li>
                 </ul>
 
               </div>
