@@ -24,7 +24,7 @@ body {
     border-radius: 20px;
 }
 
-.logo {
+.logo {   
     position: relative;
     width: 10%;
     max-width: 200px;
@@ -35,7 +35,7 @@ body {
 }
 
 .logo1 {
-    left: 10%;
+    left: 10%; 
 }
 
 
