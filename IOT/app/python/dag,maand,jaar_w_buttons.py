@@ -15,7 +15,7 @@ p = figure(
     max_width=500,
     height=250,)
 
-output_file(filename="jaar_bar_graph.html", title="verbruik in kWh per jaar")
+output_file(filename="graph.html", title="verbruik in kWh per jaar")
 
 
 factors = [
