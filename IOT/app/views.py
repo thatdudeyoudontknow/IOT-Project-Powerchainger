@@ -21,4 +21,3 @@ def bezuinigen():
 @app.route("/graph")
 def graph():
     return render_template("public/graph.html")
-
