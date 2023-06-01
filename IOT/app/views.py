@@ -35,7 +35,7 @@ def login():
     return render_template("public/login.html", form=form)
 
 @app.route("/logout")
-@login_required
+# @login_required
 def logout():
     logout_user()
     return redirect("/home")
