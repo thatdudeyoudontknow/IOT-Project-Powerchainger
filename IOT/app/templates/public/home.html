@@ -3,7 +3,21 @@
 
 {%block main%}
       
-        <div class="container" style="position: absolute; top: 20%; left: 15%;">
-            <iframe title="1e graph" class="graph" src="{{ url_for('graph') }}" width="600" height="350"></iframe>
-        </div>
+<head>
+  <script src="{{ url_for('static', filename='chart.js') }}"></script>
+  <script src="{{ url_for('static', filename='script.js') }}"></script>
+  <script src="{{ url_for('static', filename='moment.js') }}"></script>
+</head>
+<body>
+
+<!-- Knoppen om te switchen van grafiek -->
+<button id="btnHour" class="selected">Uur</button>
+<button id="btnDay">Dag</button>
+<button id="btnWeek">Week</button>
+<button id="btnMonth">Maand</button>
+
+<!-- de grafiek zelf -->
+<div class="chart-container" style="position: relative; height:500px; width:800px">
+  <canvas id="Grafieken"></canvas>
+</div>
 {%endblock%}
