@@ -26,7 +26,7 @@ def graph():
 app.route('/data')
 def get_data():
     # Connect to the SQLite database
-    conn = sqlite3.connect('C:\\Users\\leend\\mqtt_messages.db')
+    conn = sqlite3.connect('mqtt_messages.db')
     cursor = conn.cursor()
 
     # Execute a query to retrieve data from the database
