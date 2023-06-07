@@ -1,7 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
   let currentChart = null; // Variable to keep track of the current chart
 
-  fetch('/data')
+  fetch("/data")
     .then(response => response.json())
     .then(data => {
 

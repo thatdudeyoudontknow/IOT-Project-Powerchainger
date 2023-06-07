@@ -6,6 +6,7 @@ from flask_cors import CORS
 import datetime
 
 
+
 @app.route("/")
 def home():
     return render_template("public/home.html")
