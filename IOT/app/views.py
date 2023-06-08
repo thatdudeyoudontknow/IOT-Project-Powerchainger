@@ -1,6 +1,7 @@
 from app import app
 from flask import render_template
 from flask_login import LoginManager
+from app.forms import LoginForm
 
 
 @app.route("/")
@@ -18,6 +19,11 @@ def bezuinigen():
 @app.route("/graph")
 def graph():
     return render_template("public/graph.html")
+
+@app.route("/login")
+def login2():
+    return render_template("public/login2.html")
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
