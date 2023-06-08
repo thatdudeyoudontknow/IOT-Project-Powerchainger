@@ -25,6 +25,9 @@ def login2():
     return render_template("public/login2.html")
 
 
+
+
+
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
