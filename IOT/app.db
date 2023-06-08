@@ -1,0 +1,43 @@
+CREATE TABLE "HKU" (
+	"huisID"	INTEGER NOT NULL,
+	"kamerID"	INTEGER NOT NULL,
+	"userID"	INTEGER NOT NULL,
+	PRIMARY KEY("huisID","kamerID","userID"),
+	FOREIGN KEY("huisID") REFERENCES "huis"("huisID"),
+	FOREIGN KEY("kamerID") REFERENCES "kamer"("kamerID"),
+	FOREIGN KEY("userID") REFERENCES "user"("userID")
+);
+
+CREATE TABLE "huis" (
+	"huisID"	INTEGER NOT NULL,
+	"huisnaam"	TEXT NOT NULL,
+	"verbruik_per_huis"	REAL,
+	PRIMARY KEY("huisID")
+);
+
+CREATE TABLE "kamer" (
+	"huisID"	INTEGER NOT NULL,
+	"kamerID"	INTEGER NOT NULL,
+	"verbruik_per_kamer"	REAL,
+	PRIMARY KEY("huisID","kamerID"),
+	FOREIGN KEY("huisID") REFERENCES "huis"("huisID")
+);
+
+CREATE TABLE "user" (
+	"userID"	INTEGER NOT NULL,
+	"gebruikersnaam"	TEXT NOT NULL,
+	"wachtwoord "	TEXT NOT NULL,
+	"email"	TEXT NOT NULL,
+	PRIMARY KEY("userID")
+);
+
+CREATE TABLE "vrienden" (
+	"userID"	INTEGER NOT NULL,
+	"vriendenID"	INTEGER NOT NULL,
+	PRIMARY KEY("vriendenID","userID"),
+	FOREIGN KEY("userID") REFERENCES "user"("userID"),
+	FOREIGN KEY("vriendenID") REFERENCES "user"("userID")
+);
+
+INSERT INTO user (userID, gebruikersnaam, wachtwoord, email)
+VALUES ('1', 'voorbeeld', '123456', 'cool@email.com');

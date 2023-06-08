@@ -1,6 +1,11 @@
 from app import app
 from flask import render_template
+<<<<<<< Updated upstream
 
+=======
+from flask_login import LoginManager
+from app.forms import LoginForm
+>>>>>>> Stashed changes
 
 @app.route("/")
 def homepage():
