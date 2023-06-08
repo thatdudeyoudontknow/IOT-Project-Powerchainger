@@ -62,16 +62,18 @@ document.addEventListener('DOMContentLoaded', function() {
 
       btnHour.addEventListener('click', function() {
 
-    // pak de data en zorg dat alleen het UUR word gepakt
-        const currentHour = new Date().getHours();
-
-        const filteredDataHour = data.filter(item => {
-          const itemHour = new Date(item.timestamp).getHours();
-          return itemHour === currentHour;
-        });
-
-        const labels = filteredDataHour.map(item => new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-        const values = filteredDataHour.map(item => item.message);
+    // pak de data en zorg dat alleen het UUR van de huidige dag word gepakt
+    const currentDate = new Date().toLocaleDateString();
+    const currentHour = new Date().getHours();
+    
+    const filteredData = data.filter(item => {
+      const itemDate = new Date(item.timestamp).toLocaleDateString();
+      const itemHour = new Date(item.timestamp).getHours();
+      return itemDate === currentDate && itemHour === currentHour;
+    });
+    
+    const labels = filteredData.map(item => new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+    const values = filteredData.map(item => item.message);
         
         createOrUpdateChart(labels, values);
 

@@ -23,10 +23,10 @@ def bezuinigen():
 def graph():
     return render_template("public/graph.html")
 
-app.route('/data')
+@app.route("/data")
 def get_data():
     # Connect to the SQLite database
-    conn = sqlite3.connect('mqtt_messages.db')
+    conn = sqlite3.connect('C:\\Users\\leend\\mqtt_messages.db')
     cursor = conn.cursor()
 
     # Execute a query to retrieve data from the database
@@ -48,6 +48,8 @@ def get_data():
         results.append({'timestamp': adjusted_timestamp, 'message': row[1]})
 
     return jsonify(results)
+
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
