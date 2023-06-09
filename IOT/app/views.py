@@ -4,7 +4,11 @@ from flask_login import LoginManager
 import sqlite3
 from flask_cors import CORS
 import datetime
+import os
+# from app import 
 # from app.forms import LoginForm
+
+db = 'data.sqlite'
 
 @app.route("/")
 def home():
@@ -26,11 +30,14 @@ def graph():
 def login2():
     return render_template("public/login2.html")
 
-
-app.route('/data')
+@app.route("/data")
 def get_data():
     # Connect to the SQLite database
-    conn = sqlite3.connect('C:\\Users\\leend\\mqtt_messages.db')
+
+    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
+
+    # Connect to the SQLite database
+    conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
 
     # Execute a query to retrieve data from the database
@@ -52,6 +59,9 @@ def get_data():
         results.append({'timestamp': adjusted_timestamp, 'message': row[1]})
 
     return jsonify(results)
+
+
+
 
 
 
