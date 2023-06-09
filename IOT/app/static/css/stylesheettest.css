@@ -340,6 +340,7 @@ div.buttoninlog {
 }
 
 
+
 .chart-container {
     flex: 1;
     height: 26em /* Adjust the height as needed */
@@ -372,4 +373,17 @@ div.buttoninlog {
 }
 .grafiekblok {
     display: flex;
+}
+
+input[type=submit] {
+    position: relative;
+    width: 40%;
+    /* height: 9%;
+    left: 30%;
+    top: 70%;  */
+
+    background: #00D084;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+
 }

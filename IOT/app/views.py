@@ -26,7 +26,7 @@ def bezuinigen():
 def graph():
     return render_template("public/graph.html")
 
-@app.route("/login")
+@app.route("/login", methods=["GET", "POST"])
 def login2():
     return render_template("public/login2.html")
 
@@ -99,20 +99,20 @@ if __name__ == '__main__':
 
 
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    form = LoginForm()
-    if form.validate_on_submit():
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     form = LoginForm()
+#     if form.validate_on_submit():
 
-        login_user(user)
+#         login_user(user)
 
-        flask.flash('Logged in successfully.')
+#         flask.flash('Logged in successfully.')
 
-        next = flask.request.args.get('next')
-        if not url_has_allowed_host_and_scheme(next, request.host):
-            return flask.abort(400)
-        return flask.redirect(next or flask.url_for('index'))
-    return render_template("public/login.html", form=form)
+#         next = flask.request.args.get('next')
+#         if not url_has_allowed_host_and_scheme(next, request.host):
+#             return flask.abort(400)
+#         return flask.redirect(next or flask.url_for('index'))
+#     return render_template("public/login.html", form=form)
 
 @app.route("/logout")
 # @login_required
