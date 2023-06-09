@@ -1,6 +1,32 @@
 document.addEventListener('DOMContentLoaded', function() {
   let currentChart = null; // Variable to keep track of the current chart
 
+        // Function to fetch the latest value from the Flask route
+        function fetchCurrentValue() {
+          axios.get('/huidig_verbruik')
+              .then(response => {
+                  const valueElement = document.getElementById('huidig_verbruik');
+
+                  if (response.data.error) {
+                      valueElement.textContent = response.data.error;
+                  } else {
+                      const value = response.data.value;
+                      valueElement.textContent = ` ${value} KW`;
+                  }
+              })
+              .catch(error => {
+                  console.error('Error:', error);
+              });
+      }
+
+      // Fetch the current value when the page is loaded
+      fetchCurrentValue();
+
+      // Periodically update the graph every 5 seconds
+      setInterval(fetchCurrentValue, 5000);
+
+
+
   fetch("/data")
     .then(response => response.json())
     .then(data => {
@@ -53,6 +79,12 @@ document.addEventListener('DOMContentLoaded', function() {
           });
         }
       }
+
+      // Fetch the current value when the page is loaded
+      fetchCurrentValue();
+
+      // Periodically update the graph every 5 seconds
+      setInterval(fetchCurrentValue, 5000);
 
       // luisert of er op de knop word gedrukt op de html
       const btnHour = document.getElementById('btnHour');

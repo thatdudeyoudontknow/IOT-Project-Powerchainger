@@ -30,6 +30,8 @@ def graph():
 def login2():
     return render_template("public/login2.html")
 
+
+# data dat word uit de database gehaald voor de grafiek
 @app.route("/data")
 def get_data():
     # Connect to the SQLite database
@@ -60,6 +62,38 @@ def get_data():
 
     return jsonify(results)
 
+# data word uit de database gehaald om de laatste waardes op te halen voor het huidig verbruik
+@app.route('/huidig_verbruik')
+def get_current():
+    # Get the absolute path of the database file in the current directory
+    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
+
+    # Connect to the SQLite database
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+
+    # Execute a query to retrieve the latest numerical value from the database
+    query = "SELECT message FROM mqtt_messages ORDER BY timestamp DESC LIMIT 1"
+    cursor.execute(query)
+
+    # Fetch the latest message
+    row = cursor.fetchone()
+
+    # Close the database connection
+    conn.close()
+
+    if row is None:
+        # No messages found in the database
+        return jsonify({'error': 'No messages found.'})
+
+    # Extract the numerical value from the message
+    numerical_value = float(row[0])
+
+    return jsonify({'value': numerical_value})
+
+
+if __name__ == '__main__':
+    app.run()
 
 
 
