@@ -33,7 +33,7 @@ def login2():
 @app.route("/data")
 def get_data():
     # Connect to the SQLite database
-    # C:\\Users\\leend\\mqtt_messages.db
+
     database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
 
     # Connect to the SQLite database
