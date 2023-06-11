@@ -5,34 +5,26 @@
 
 <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_login.css') }}">
 
-{% for message in get_flashed_messages() %}
-<div class="alert alert-warning">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
-    {{ message }}
-</div>
-{% endfor %}
-<div class="container mt-2">
-    <div class="row justify-content-md-center">
-        <div class="col col-lg-3 col-md-8 col-sm-10">
-            <form method="POST">
-                {{ form.hidden_tag() }}
-            <div class="mb-2">
-                {{ form.email.label(class="form-label") }} 
-                {{ form.email(class="form-control") }}
-            </div>
-            <div class="mb-2">
-                {{ form.password.label(class="form-label") }} 
-                {{ form.password( class="form-control") }}
-                </div>
-                {{ form.submit(class="btn btn-primary") }}
-            </form>
-        </div>
-    </div>
-</div>
+{% if logged_in %}
+	</p><h1>Welkom {{ form_username }} !</h1>
+	<a href="logoutlink">Uitloggen</a>
+	<p>Dit is privé</p>
 
+{% else %}
 
-<a href="{{ url_for('ww_vergeten') }}" class="ww_button">wachtwoord vergeten?</a>
-{% endblock %}
+<form method="post">
+	<div class="formfield">
+		Gebruikersnaam: <input type="text" name="loginname" value="{{ form_username }}" fdprocessedid="42s6cn">
+	</div>
+	<div class="formfield">
+		Wachtwoord: <input type="password" name="password" fdprocessedid="2uvn2">
+		<input type="submit" value="Inloggen" fdprocessedid="x8azr9">
+	</div>	
+	<p style="color: red;">{{ foutmelding }}</p>
+</form>
+
+{%endif%}
+
+<!-- <a href="{{ url_for('ww_vergeten') }}" class="ww_button">wachtwoord vergeten?</a> -->
 
 {%endblock%}
-
