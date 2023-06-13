@@ -10,6 +10,7 @@
         <div class="inlineregistratie">
             
             <p class="home">registratie</p>
+
             <form method="post">
                 <div class="formfield">
                     Gebruikersnaam: <input type="text" name="loginname" value="{{ form_username }}" fdprocessedid="42s6cn">
@@ -19,14 +20,15 @@
                     <input type="submit" value="Registreren" fdprocessedid="x8azr9">
                 </div>	
                 <p style="color: red;">{{ foutmelding }}</p>
-            
             </form>	
 
         </div>
 
+        
         <div class="inlinelogin">
             
             <p class="home">login</p>
+
             <form method="post">
                 <div class="formfield">
                     Gebruikersnaam: <input type="text" name="loginname" value="{{ form_username }}" fdprocessedid="42s6cn">
@@ -36,9 +38,10 @@
                     <input type="submit" value="Inloggen" fdprocessedid="x8azr9">
                 </div>	
                 <p style="color: red;">{{ foutmelding }}</p>
-
             </form>	
+
         </div>
+
     </div>
 
 

@@ -31,6 +31,13 @@ def login2():
     return render_template("public/login2.html")
 
 
+
+
+
+
+
+
+
 # data dat word uit de database gehaald voor de grafiek
 @app.route("/data")
 def get_data():
@@ -113,6 +120,8 @@ if __name__ == '__main__':
 #             return flask.abort(400)
 #         return flask.redirect(next or flask.url_for('index'))
 #     return render_template("public/login.html", form=form)
+
+
 
 @app.route("/logout")
 # @login_required

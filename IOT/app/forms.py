@@ -19,6 +19,12 @@ class RegistrationForm(FlaskForm):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('')
         
+
+
+
+
+
+        
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('wachtwoord', validators=[DataRequired()])
