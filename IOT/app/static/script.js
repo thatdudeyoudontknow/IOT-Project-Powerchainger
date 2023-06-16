@@ -172,7 +172,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
         createOrUpdateChart(labels, values);
       }
-
+      if (document.getElementById('Grafieken')) {
       btnHour.addEventListener('click', function () {
         const filteredData = filterDataByHour(data);
         updateChartWithFilteredData(filteredData);
@@ -218,7 +218,7 @@ document.addEventListener('DOMContentLoaded', function () {
       });
 
       btnHour.click();
-    })
+    }})
     .catch(error => {
       console.error('Error:', error);
     });
