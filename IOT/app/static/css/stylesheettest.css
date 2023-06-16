@@ -1,123 +1,395 @@
-/* Algemene style sheet */
+/* BASE HTML */
 
 html, head, body, div, h1, p {
     margin: 0;padding: 0;
     font-family: monospace;
 
 }
-html {background-color: black}
+
+body {
+    font-size: 14px;
+}
+
 
 .outline {/* Rectangle 8 */
+
     position: absolute;
     width: 97%;
     height: 97%;
-    left: 2%;
+    left: 1.5%;
     top: 2%;
+    right: 2%;
+    margin: auto;
+    bottom: 2%;
     
     background: #F8C232;
     border-radius: 20px;
 }
 
-.wrapper {/*wrapper voor vorm */
-    width: 100%;
-}
-
-.logo {/* powerchainger-logo 2 */
-
-    position: absolute;
-    width: 15%;
+.logo {   
+    position: relative;
+    width: 10%;
     max-width: 200px;
     height: 10%;
     left: 3%;
-    top: 0;
+    top: -3%;
     margin-top: 2.5em;
 }
 
-.top{/* Rectangle 10 */
+.logo1 {
+    left: 10%; 
+}
 
+
+.searchbar{
 
     position: relative;
-    width: 75%;
-    min-width: 0px;
-    left: 20%;
-    height: 7em;
+    width: 70%;
+    height: 35%;
+    left: 26%;
+    top: -63%;
+    
+    background: #F4F4F4;
+    border: 0.5px solid #000000;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
 
-    top: 3%;
+.searchbarbox{/* Rectangle 18 */
+
+    position: relative;
+    width: 29%;
+    height: 7%;
+    left: 55%;
+    top: -18%;
+    
+    background: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;   
+
+}
+
+
+.top{/* Rectangle 10 */
+
+    position: relative;
+    width: 39%;
+    height: 7%;
+    left: 15%;
+    top: -11%;
+    right: 30%;
 
     background: #F4F4F4;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
 }
 
-.rect1{/* Rectangle 10 */
+.inlog{/* Rectangle 18 */
+
+    position: relative;
+    width: 13%;
+    height: 7%;
+    left: 85%;
+    top: -27%;
+    
+    background: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;   
+
+}
+
+li {
+    float: left;
+}
+
+li a {
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 25px 25px;
+    text-decoration: none;
+}
+
+#navbarNav a:hover {
+    background-color: #e3e3e3c5;
+}
+
+#navbarNav ul
+{
+	font-size: 1.4vw;
+
+}
+
+#navbarNav ul li
+{
+    display: inline;
+	color:rgb(0, 0, 0);
+}
+
+#navbarNav li:not(:first-child):before {
+    content: " | ";
+}
+
+.search{
+    
+    display: inline-block;
+    color: black;
+    text-align: center;
+    padding: 25px 25px;
+    text-decoration: none;
+    font-size: 1.4vmax;
+}
 
 
-    position: absolute;
+/* BASE HTML */
+/* -------------------------------------------------------------*/
+/* DIV'S */
+
+.verbruikperdatum {
+    position: relative;
+    width: 49%;
+    height: 49%;
+    left: 2%;
+    top: -24%;
+
+    background: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
+
+.bespaard{
+    position: relative;
+    width: 25%;
+    height: 33%;
+    left: 52%;
+    top: -73%;
+
+    background: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
+
+.sociaal {
+    position: relative;
+    width: 20%;
+    height: 84%;
+    left: 78%;
+    top: -106%;
+
+    background: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;    
+}
+
+.huidigverbruik{
+    position: relative;
+    width: 25%;
+    height: 33%;
+    left: 2%;
+    top: -139%;
+
+    background: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+    font-size: 250%;
+    text-align: center;
+}
+
+.ecologischevoetafdruk{
+    position: relative;
+    width: 23%;
+    height: 33%;
+    left: 28%;
+    top: -172%;
+
+    background: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
+
+.tips{
+    position: relative;
+    width: 25%;
+    height: 49%;
+    left: 52%;
+    top: -221%;
+
+    background: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
+
+p.home {
+    text-align: center;
+    color: black;
+    padding: 25px;
+    text-decoration: none;
+    font-size: 1.4vmax;
+}
+
+/* DIV'S */
+/* -------------------------------------------------------------*/
+/* COMPETITIE */
+
+
+.sociaal2 {
+    position: relative;
+    width: 20%;
+    height: 84%;
+    left: 78%;
+    top: -192%;
+    
+    background: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
+
+.huizen{
+    position: relative;
+    width: 29%;
+    height: 84%;
+    left: 48%;
+    top: -24%;
+    
+    background: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
+
+.kamers{
+    position: relative;
+    width: 45%;
+    height: 84%;
+    left: 2%;
+    top: -108%;
+
+    background: #F4F4F4;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
+
+p.competitie{
+    text-align: center;
+    color: black;
+    padding: 25px;
+    text-decoration: none;
+    font-size: 1.4vmax;
+}
+
+
+/* COMPETITIE */
+/* -------------------------------------------------------------*/
+/* LOGIN */
+
+
+.outlinelogin{
+    position: relative;
+    width: 96%;
+    height: 84%;
+    left: 2%;
+    top: -24%;
+
+    background: #FFDE8D;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
+}
+
+.inlinelogin{
+    position: relative;
     width: 35%;
-    height: 50%;
-    left: 10%;
-    top: 20%;
-    
-    background: #F4F4F4;
+    height: 75%;
+    left: 13%;
+    top: -65%;
+
+    background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
-
 }
 
-.rect2{/* Rectangle 10 */
-
-
-    position: absolute;
+.inlineregistratie{
+    position: relative;
     width: 35%;
-    height: 50%;
-    left: 50%;
-    top: 20%;
-    
-    background: #F4F4F4;
+    height: 75%;
+    left: 53%;
+    top: 10%;
+
+    background: #FFFFFF;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
 }
 
-.rect3{/* Rectangle 10 */
+p.home {
+    text-align: center;
+    color: black;
+    padding: 25px;
+    text-decoration: none;
+    font-size: 1.4vmax;
+}
 
 
-    position: absolute;
-    width: 50%;
-    height: auto;
-    left: 25%;
-    top: 75%;
-    
-    background: #F4F4F4;
+/* LOGIN */
+/* -------------------------------------------------------------*/
+/* GRAFIEK */
+
+
+
+div.buttoninlog {
+    position: relative;
+    width: 40%;
+    height: 9%;
+    left: 30%;
+    top: 70%;
+
+    background: #00D084;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
 }
 
-.navbar-nav {
+
+
+.chart-container {
+    flex: 1;
+    height: 26em /* Adjust the height as needed */
+}
+
+.button-container {
     display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
 
-      /* home */
+.button-container button {
+    margin: 7px 0;
+    margin-right: 2em;
+    background-color: #F8C232;
+    border-radius: 0%;
+    border: none;
+    color: black;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    font-family: monospace;
+    padding: 20px;
+    text-decoration: none;
+    font-size: 1vmax;
+}
 
-    
-    position: absolute;
-    width: 35%;
-    height: 50%;
-    left: 20%;
-    top: 2%;
+.button-container button:hover {
+    background-color: #e0b231;
+}
+.grafiekblok {
+    display: flex;
+}
 
-font-family: 'Noto Sans';
-font-style: normal;
-font-weight: 600;
-font-size: 32px;
-line-height: 44px;
-text-align: center;
+input[type=submit] {
+    position: relative;
+    width: 40%;
+    /* height: 9%;
+    left: 30%;
+    top: 70%;  */
 
-color: rgba(0, 0, 0, 0.67);
+    background: #00D084;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 20px;
 
-
-  }
-  
-  .nav-item {
-    margin-right: 3rem;
-  }
-  
-
+}

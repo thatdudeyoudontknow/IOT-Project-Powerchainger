@@ -2,5 +2,29 @@
 
 
 {%block main%}
-              HIER NEERZETTEN!
+
+<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/style_login.css') }}">
+
+{% if logged_in %}
+	</p><h1>Welkom {{ form_username }} !</h1>
+	<a href="logoutlink">Uitloggen</a>
+	<p>Dit is privé</p>
+
+{% else %}
+
+<form method="post">
+	<div class="formfield">
+		Gebruikersnaam: <input type="text" name="loginname" value="{{ form_username }}" fdprocessedid="42s6cn">
+	</div>
+	<div class="formfield">
+		Wachtwoord: <input type="password" name="password" fdprocessedid="2uvn2">
+		<input type="submit" value="Inloggen" fdprocessedid="x8azr9">
+	</div>	
+	<p style="color: red;">{{ foutmelding }}</p>
+</form>
+
+{%endif%}
+
+<!-- <a href="{{ url_for('ww_vergeten') }}" class="ww_button">wachtwoord vergeten?</a> -->
+
 {%endblock%}
