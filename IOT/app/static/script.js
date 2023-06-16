@@ -1,31 +1,77 @@
 document.addEventListener('DOMContentLoaded', function() {
   let currentChart = null; // Variable to keep track of the current chart
 
-        // Function to fetch the latest value from the Flask route
-        function fetchCurrentValue() {
-          axios.get('/huidig_verbruik')
-              .then(response => {
-                  const valueElement = document.getElementById('huidig_verbruik');
+  function fetchVerbruik() {
+    axios.get('/huidig_verbruik')
+      .then(response => {
+        const verbruikElement = document.getElementById('huidig_verbruik');
+  
+        if (response.data.error) {
+          verbruikElement.textContent = response.data.error;
+        } else {
+          const verbruik = response.data.value;
+          verbruikElement.textContent = `${verbruik} KW`;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+  
+  function fetchHuidigeWoning() {
+    axios.get('/huidige_woning')
+      .then(response => {
+        const woningElement = document.getElementById('huidige_woning');
+  
+        if (response.data.error) {
+          woningElement.textContent = response.data.error;
+        } else {
+          const woningValue = response.data.value;
+          woningElement.textContent = woningValue;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+  
+  function fetchCurrentValues() {
+    fetchVerbruik();
+    fetchHuidigeWoning();
+  }
+  
 
-                  if (response.data.error) {
-                      valueElement.textContent = response.data.error;
-                  } else {
-                      const value = response.data.value;
-                      valueElement.textContent = ` ${value} KW`;
-                  }
-              })
-              .catch(error => {
-                  console.error('Error:', error);
-              });
-      }
-
-      // Fetch the current value when the page is loaded
-      fetchCurrentValue();
-
-      // Periodically update the graph every 5 seconds
-      setInterval(fetchCurrentValue, 5000);
+  // Fetch the current values when the page is loaded
 
 
+
+  function fetchTotalValue() {
+    axios.get('/verbruik_per_dag')
+      .then(response => {
+        const valueElement = document.getElementById('verbruik_per_dag');
+  
+        if (response.data.error) {
+          valueElement.textContent = response.data.error;
+        } else {
+          const values = response.data.values;
+          const total = values.reduce((acc, entry) => acc + entry.value, 0); // Access the 'value' property of each entry
+          valueElement.textContent = `${total} KW`;
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+  
+  function fetchCurrentValues() {
+    fetchVerbruik();
+    fetchHuidigeWoning();
+    fetchTotalValue();
+  }
+
+  fetchCurrentValues();
+
+  
 
   fetch("/data")
     .then(response => response.json())
@@ -55,7 +101,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 borderColor: 'blue',
                 borderWidth: 1,
                 pointBorderWidth: 0,
-    
+
               }]
             },
             // OPTIES AANPASSEN OM DE GRAFIEK AAN TE PASSEN
@@ -80,12 +126,6 @@ document.addEventListener('DOMContentLoaded', function() {
         }
       }
 
-      // Fetch the current value when the page is loaded
-      fetchCurrentValue();
-
-      // Periodically update the graph every 5 seconds
-      setInterval(fetchCurrentValue, 5000);
-
       // luisert of er op de knop word gedrukt op de html
       const btnHour = document.getElementById('btnHour');
       const btnDay = document.getElementById('btnDay');
@@ -94,19 +134,19 @@ document.addEventListener('DOMContentLoaded', function() {
 
       btnHour.addEventListener('click', function() {
 
-    // pak de data en zorg dat alleen het UUR van de huidige dag word gepakt
-    const currentDate = new Date().toLocaleDateString();
-    const currentHour = new Date().getHours();
-    
-    const filteredData = data.filter(item => {
-      const itemDate = new Date(item.timestamp).toLocaleDateString();
-      const itemHour = new Date(item.timestamp).getHours();
-      return itemDate === currentDate && itemHour === currentHour;
-    });
-    
-    const labels = filteredData.map(item => new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
-    const values = filteredData.map(item => item.message);
-        
+        // pak de data en zorg dat alleen het UUR van de huidige dag word gepakt
+        const currentDate = new Date().toLocaleDateString();
+        const currentHour = new Date().getHours();
+
+        const filteredData = data.filter(item => {
+          const itemDate = new Date(item.timestamp).toLocaleDateString();
+          const itemHour = new Date(item.timestamp).getHours();
+          return itemDate === currentDate && itemHour === currentHour;
+        });
+
+        const labels = filteredData.map(item => new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
+        const values = filteredData.map(item => item.message);
+
         createOrUpdateChart(labels, values);
 
         // zorg dat deze knop een geselecteerd vinkje krijgt en de abdere knoppen niet 
@@ -127,7 +167,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
         const labels = filteredDataDay.map(item => new Date(item.timestamp).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }));
         const values = filteredDataDay.map(item => item.message);
-        
+
         createOrUpdateChart(labels, values);
 
         // zorg dat deze knop een geselecteerd vinkje krijgt en de abdere knoppen niet 
@@ -138,21 +178,21 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Update the other buttons (btn3, btn4, btn5) as needed
       });
-      
+
       btnWeek.addEventListener('click', function() {
-      // pak de data en zorg dat alleen de WEEK word gepakt
+        // pak de data en zorg dat alleen de WEEK word gepakt
         const currentWeek = moment().week();
-      
+
         const filteredDataWeek = data.filter(item => {
           const itemWeek = moment(item.timestamp).week();
           return itemWeek === currentWeek;
         });
-      
+
         const labels = filteredDataWeek.map(item => moment(item.timestamp).format('ll'));
         const values = filteredDataWeek.map(item => item.message);
-        
+
         createOrUpdateChart(labels, values);
-     
+
 
         // zorg dat deze knop een geselecteerd vinkje krijgt en de abdere knoppen niet 
         btnHour.classList.remove('selected');
@@ -162,17 +202,17 @@ document.addEventListener('DOMContentLoaded', function() {
       });
 
       btnMonth.addEventListener('click', function() {
-      const currentMonth = moment().month();
-      // pak de data en zorg dat alleen de MAAND word gepakt
-      const filteredDataMonth = data.filter(item => {
-        const itemMonth = moment(item.timestamp).month();
-        return itemMonth === currentMonth;
-      });
-    
-      const labels = filteredDataMonth.map(item => moment(item.timestamp).format('ll'));
-      const values = filteredDataMonth.map(item => item.message);
+        // pak de data en zorg dat alleen de MAAND word gepakt
+        const currentMonth = new Date().getMonth();
 
-        
+        const filteredDataMonth = data.filter(item => {
+          const itemMonth = new Date(item.timestamp).getMonth();
+          return itemMonth === currentMonth;
+        });
+
+        const labels = filteredDataMonth.map(item => moment(item.timestamp).format('ll'));
+        const values = filteredDataMonth.map(item => item.message);
+
         createOrUpdateChart(labels, values);
 
         // zorg dat deze knop een geselecteerd vinkje krijgt en de abdere knoppen niet 
@@ -181,9 +221,6 @@ document.addEventListener('DOMContentLoaded', function() {
         btnWeek.classList.remove('selected');
         btnMonth.classList.add('selected');
       });
-
-
-      // zorg dat bij het laden van de html knop 1 auto ingedrukt word
       btnHour.click();
     })
     .catch(error => {
