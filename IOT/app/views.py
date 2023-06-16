@@ -2,11 +2,9 @@ from app import app
 from flask import Flask, jsonify, render_template
 from flask_login import LoginManager
 import sqlite3
-from flask_cors import CORS
 import datetime
 import os
-# from app import 
-# from app.forms import LoginForm
+
 
 db = 'data.sqlite'
 
