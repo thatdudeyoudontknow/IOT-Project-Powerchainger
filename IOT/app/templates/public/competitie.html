@@ -1,24 +1,33 @@
-{%extends "public/templates/iot_template.html"%}
+{% extends "public/templates/iot_template.html" %}
 
-
-{%block main%}
-
+{% block main %}
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <div class="huizen">
     <p class="competitie">huizen</p>
-
 </div>
-
 
 <div class="kamers">
-    <p class="competitie">kamers </p>
-
+    <p class="competitie">kamers</p>
 </div>
-
 
 <div class="sociaal2">
-    <p class="competitie" >sociaal</p>
-
+    <p class="competitie">sociaal</p>
+    <div id="searchResults" class="search-results">
+        <div id="verbruikTable" class="vriendentabel"></div>
+    </div>
+    <div class="vriend-toevoeg-button">
+    <button id="openPopup">Voeg vrienden toe</button>
+    </div>
+    <div id="popup" class="popup">
+        <div class="yellow-bar">
+            Voeg vrienden toe
+            <button id="closePopup">Close</button>
+        </div>
+        <form id="searchForm" action="/search" method="POST">
+            <input type="text" name="search_query" class="search-bar" placeholder="zoek op gebruikersnaam">
+            <input type="submit" value="zoek">
+        </form>
+    </div>
 </div>
 
-
-{%endblock%}
+{% endblock %}

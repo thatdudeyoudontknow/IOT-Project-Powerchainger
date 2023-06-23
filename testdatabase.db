@@ -40,11 +40,13 @@ CREATE TABLE "vrienden" (
 CREATE TABLE "verbruik" (
 	"huisID"	INTEGER NOT NULL,
 	"kamerID"	INTEGER NOT NULL,
+	"userID"	INTEGER NOT NULL,
 	"verbruik"	REAL,
 	"datetime"	TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', '+02:00')),
-	PRIMARY KEY("huisID", "kamerID", "datetime"),
+	PRIMARY KEY("huisID", "kamerID", "userID", "datetime"),
 	FOREIGN KEY("huisID") REFERENCES "huis"("huisID"),
 	FOREIGN KEY("kamerID") REFERENCES "kamer"("kamerID")
+	FOREIGN KEY("userID") REFERENCES "user"("userID")
 );
 
 INSERT INTO "huis" ("huisnaam") VALUES ('van doornveste');
@@ -56,3 +58,14 @@ INSERT INTO "huis" ("huisnaam") VALUES ('giethoorns');
 INSERT INTO "kamer" ("huisID", "kamernaam") VALUES (2,'Woonkamer');
 INSERT INTO "user" ("gebruikersnaam", "wachtwoord","email") VALUES ('Admin','Welkom123', 'tessst@test.nl');
 INSERT INTO "HKU" ("huisID", "kamerID", "userID") VALUES (1,1,1);
+
+INSERT INTO "huis" ("huisnaam") VALUES ('liefmans');
+INSERT INTO "kamer" ("huisID", "kamernaam") VALUES (3,'19');
+INSERT INTO "user" ("gebruikersnaam", "wachtwoord","email") VALUES ('Henk','Welkom123', 'tegst@test.nl');
+INSERT INTO "HKU" ("huisID", "kamerID", "userID") VALUES (3,3,3);
+
+INSERT INTO "huis" ("huisnaam") VALUES ('applebandit');
+INSERT INTO "kamer" ("huisID", "kamernaam") VALUES (4,'31B');
+INSERT INTO "user" ("gebruikersnaam", "wachtwoord","email") VALUES ('Waldo','Welkom123', 'teassst@test.nl');
+INSERT INTO "HKU" ("huisID", "kamerID", "userID") VALUES (4,4,4);
+

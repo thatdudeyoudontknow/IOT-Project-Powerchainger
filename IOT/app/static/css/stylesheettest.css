@@ -242,7 +242,8 @@ p.home {
     background: #F4F4F4;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
-}
+    text-align: center;
+  }
 
 .huizen{
     position: relative;
@@ -392,4 +393,73 @@ input[type=submit] {
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
     border-radius: 20px;
 
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 50em;
+    height: 60em;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+  }
+
+  /* Styles for the yellow bar */
+  .popup .bar {
+    background-color: #FFDE8D;
+    padding: 1em;
+    color: black;
+    font-weight: bold;
+    text-align: center;
+    font-size: 1.2vw;
+    font-family: monospace;
+  }
+
+  /* Styles for the close button */
+  .popup .close-button {
+    position: absolute;
+    top: 1em;
+    right: 1em;
+    cursor: pointer;
+    font-size: 1.2vw;
+    
+  }
+
+  .vriendentabel {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    font-size: 1.4vw;
+  }
+
+  .vriend-toevoeg-button{
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+.vriend-toevoeg-button button {
+    margin: 7px 0;
+    margin-right: 2em;
+    background-color: #F8C232;
+    border-radius: 0%;
+    border: none;
+    color: black;
+    text-align: center;
+    display: inline-block;
+    font-size: 16px;
+    font-family: monospace;
+    padding: 20px;
+    text-decoration: none;
+    font-size: 1vmax;
+}
+
+.vriend-toevoeg-button button:hover {
+    background-color: #e0b231;
 }

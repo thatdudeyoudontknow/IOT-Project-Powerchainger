@@ -222,4 +222,48 @@ document.addEventListener('DOMContentLoaded', function () {
     .catch(error => {
       console.error('Error:', error);
     });
+
+    var openPopupButton = document.getElementById('openPopup');
+    var popup = document.getElementById('popup');
+    var searchForm = document.getElementById('searchForm');
+    var searchResults = document.getElementById('searchResults');
+
+    openPopupButton.addEventListener('click', function() {
+      popup.style.display = 'block';
+    });
+
+    searchForm.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var searchQuery = document.getElementsByName('search_query')[0].value;
+
+      // Perform AJAX request to send search query to the server
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/search', true);
+      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+          searchResults.innerHTML = xhr.responseText;
+        }
+      };
+      xhr.send('search_query=' + encodeURIComponent(searchQuery));
+    });
+
+  $.ajax({
+    url: "/vrienden_verbruik_per_dag",
+    method: "GET",
+    success: function(response) {
+      // Update the HTML content with the received data
+      var tableHtml = "<table>";
+      tableHtml += "<tr><th>naam</th><th>dagverbruik</th></tr>";
+      $.each(response, function(gebruikersnaam, totalVerbruik) {
+        tableHtml += "<tr><td>" + gebruikersnaam + "</td><td>" + totalVerbruik + "</td></tr>";
+      });
+      tableHtml += "</table>";
+      $("#verbruikTable").html(tableHtml);
+    },
+    error: function(xhr, status, error) {
+      console.log("Error:", error);
+    }
+  });
+    
 });
