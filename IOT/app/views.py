@@ -5,6 +5,7 @@ import sqlite3
 from flask_cors import CORS
 import datetime
 import os
+import json
 # from app import 
 # from app.forms import LoginForm
 
@@ -194,7 +195,7 @@ def get_total_vrienden():
 
     
 # -----------------------------------------------------------------------------------
-# verbruik per dag van de huidige gebruiker
+# huidig verbruik van de huidige gebruiker
 @app.route('/huidig_verbruik')
 def get_current():
     userID = 1
@@ -217,9 +218,122 @@ def get_current():
 
     if row is None:
         # No messages found in the database
-        return jsonify({'error': 'geen gebruik gevonden'})
+        return jsonify({'error': 'geen verbruik gevonden'})
 
     # Extract the numerical value from the message
     numerical_value = float(row[0])
 
     return jsonify({'value': numerical_value})
+
+
+# -----------------------------------------------------------------------------------
+# verbruik per dag van de huidige gebruiker
+@app.route('/verbruik_per_dag')
+def dagverbruik():
+    userID = 1
+
+    # Get the absolute path of the database file in the current directory
+    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
+
+    # Connect to the SQLite database
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+
+    # Execute a query to retrieve the sum of verbruik values for the user and the current day
+    query = """
+        SELECT user.gebruikersnaam, SUM(verbruik.verbruik)
+        FROM verbruik
+        JOIN user ON verbruik.userID = user.userID
+        WHERE verbruik.huisID IN (SELECT huisID FROM HKU WHERE userID = ?)
+            AND DATE(verbruik.datetime) = DATE('now', 'localtime')
+        GROUP BY verbruik.userID
+    """
+
+    cursor.execute(query, (userID,))  # Pass the user ID as a parameter
+
+    # Fetch the rows containing the sum of verbruik values per user along with usernames
+    # Fetch the latest message
+    row = cursor.fetchone()
+
+    # Close the database connection
+    conn.close()
+
+    if row is None:
+        # No messages found in the database
+        return jsonify({'error': 'geen verbruik gevonden'})
+
+    # Extract the numerical value from the message
+    numerical_value = float(row[1])
+
+    return jsonify({'value': numerical_value})
+
+# -----------------------------------------------------------------------------------
+# verzend de vrienden ID's naar de database
+
+# @app.route('/voeg_vrienden_toe', methods=['POST'])
+# def voeg_vrienden_toe():
+#     selected_user_ids = None
+#     print('Request Data:', request.data)
+
+#     try:
+#         selected_user_ids = json.loads(request.data)
+#     except json.JSONDecodeError as e:
+#         print('JSON Decode Error:', e)
+
+#     selected_user_ids = json.loads(request.data)
+
+#     # Connect to the SQLite database and store the selected user IDs
+#     # database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
+#     # conn = sqlite3.connect(database_path)
+#     # cursor = conn.cursor()
+
+#     # # Execute an INSERT statement to store the selected user IDs in the "vrienden" table
+#     # query = "INSERT INTO vrienden (userID, vriendenID) VALUES (?, ?)"
+#     # cursor.executemany(query, [(user_id, vrienden_id) for user_id in selected_user_ids for vrienden_id in selected_user_ids])
+
+#     # # Commit the changes and close the database connection
+#     # conn.commit()
+#     # conn.close()
+
+#     # Retrieve the necessary data for rendering the checkboxes
+#     results = get_results()  # Replace this with your actual data retrieval logic
+
+#     print(results)  # Print the contents of the results variable
+#     return render_template('your_template.html', results=results)
+
+
+@app.route('/voeg_vrienden_toe', methods=['POST'])
+def voeg_vrienden_toe():
+    selected_user_ids = None
+    print('Request Data:', request.data)
+
+    try:
+        selected_user_ids = json.loads(request.data)
+    except json.JSONDecodeError as e:
+        print('JSON Decode Error:', e)
+
+    selected_user_ids = json.loads(request.data)
+
+    # Connect to the SQLite database and store the selected user IDs
+    # database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
+    # conn = sqlite3.connect(database_path)
+    # cursor = conn.cursor()
+
+    # # Execute an INSERT statement to store the selected user IDs in the "vrienden" table
+    # query = "INSERT INTO vrienden (userID, vriendenID) VALUES (?, ?)"
+    # cursor.executemany(query, [(user_id, vrienden_id) for user_id in selected_user_ids for vrienden_id in selected_user_ids])
+
+    # # Commit the changes and close the database connection
+    # conn.commit()
+    # conn.close()
+
+    # Retrieve the necessary data for rendering the checkboxes
+    results = get_results()  # Replace this with your actual data retrieval logic
+
+    print('Selected User IDs:', selected_user_ids)  # Print the selected user IDs
+    print(results)  # Print the contents of the results variable
+    return render_template('competitie.html', results=results)
+
+
+
+

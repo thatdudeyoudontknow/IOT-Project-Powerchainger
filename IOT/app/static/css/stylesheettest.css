@@ -463,3 +463,43 @@ input[type=submit] {
 .vriend-toevoeg-button button:hover {
     background-color: #e0b231;
 }
+
+.sluitknop{
+    background-color: #F8C232;
+    border-radius: 0%;
+    border: none;
+    color: black;
+    font-size: 16px;
+    font-family: monospace;
+    padding: 1em;
+    text-decoration: none;
+    font-size: 1vmax;
+}
+
+.search-results {
+    margin-top: 10px;
+  }
+  
+  .user-result {
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  
+  .user-checkbox {
+    margin-right: 5px;
+  }
+  
+  .friend-select {
+    margin-left: 10px;
+  }
+  
+  #okButton {
+    margin-top: 10px;
+  }
+  
+  input[type="checkbox"] {
+    display: inline-block;
+    width: auto;
+    margin: 0;
+  }
