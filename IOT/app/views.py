@@ -217,7 +217,7 @@ def get_current():
 
     if row is None:
         # No messages found in the database
-        return jsonify({'error': 'No messages found.'})
+        return jsonify({'error': 'geen gebruik gevonden'})
 
     # Extract the numerical value from the message
     numerical_value = float(row[0])

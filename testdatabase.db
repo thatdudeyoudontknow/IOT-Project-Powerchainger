@@ -57,7 +57,7 @@ INSERT INTO "HKU" ("huisID", "kamerID", "userID") VALUES (1,1,1);
 INSERT INTO "huis" ("huisnaam") VALUES ('giethoorns');
 INSERT INTO "kamer" ("huisID", "kamernaam") VALUES (2,'Woonkamer');
 INSERT INTO "user" ("gebruikersnaam", "wachtwoord","email") VALUES ('Admin','Welkom123', 'tessst@test.nl');
-INSERT INTO "HKU" ("huisID", "kamerID", "userID") VALUES (1,1,1);
+INSERT INTO "HKU" ("huisID", "kamerID", "userID") VALUES (2,2,2);
 
 INSERT INTO "huis" ("huisnaam") VALUES ('liefmans');
 INSERT INTO "kamer" ("huisID", "kamernaam") VALUES (3,'19');
