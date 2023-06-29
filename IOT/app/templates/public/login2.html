@@ -9,14 +9,15 @@
 
         <div class="inlineregistratie">
             
-            <p class="home">registratie</p>
+            <p class="home">registreren</p>
 
             <form method="post">
                 <div class="formfield">
-                    Gebruikersnaam: <input type="text" name="loginname" value="{{ form_username }}" fdprocessedid="42s6cn">
+                    Gebruikersnaam: <input type="text" name="gebruikersnaam" fdprocessedid="42s6cn">
                 </div>
                 <div class="formfield">
-                    Wachtwoord: <input type="password" name="password" fdprocessedid="2uvn2">
+                    Wachtwoord: <input type="password" name="wachtwoord" fdprocessedid="2uvn2">
+
                     <input type="submit" value="Registreren" fdprocessedid="x8azr9">
                 </div>	
                 <p style="color: red;">{{ foutmelding }}</p>
@@ -30,11 +31,20 @@
             <p class="home">login</p>
 
             <form method="post">
+
                 <div class="formfield">
-                    Gebruikersnaam: <input type="text" name="loginname" value="{{ form_username }}" fdprocessedid="42s6cn">
+                    
+                    <label for="gebruikersnaam">Gebruikersnaam:</label>
+                    <input type="text" name="gebruikersnaam_login" value="{{ form_gebruikersnaam }}" fdprocessedid="42s6cn">
+
                 </div>
+
                 <div class="formfield">
-                    Wachtwoord: <input type="password" name="password" fdprocessedid="2uvn2">
+
+                    <label for="gebruikersnaam">Wachtwoord:</label>
+                    <input type="wachtwoord" name="wachtwoord" fdprocessedid="2uvn2">
+
+
                     <input type="submit" value="Inloggen" fdprocessedid="x8azr9">
                 </div>	
                 <p style="color: red;">{{ foutmelding }}</p>

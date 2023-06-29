@@ -1,0 +1,53 @@
+{%extends "public/templates/iot_template.html"%}
+
+
+{%block main%}
+
+
+
+    <div class="outlinelogin">
+
+        <div class="inlineregistratie">
+            
+            <p class="home">registreren</p>
+
+            <form method="post">
+                <div class="formfield">
+                   
+                    <!-- Gebruikersnaam: <input type="text" name="gebruikersnaam" fdprocessedid="42s6cn"> -->
+                    {{ form.gebruikersnaam.label }} {{ form.gebruikersnaam() }}
+
+                </div>
+
+            </form>
+
+
+            <form method="post"
+
+                <div class="formfield">
+
+                    {{ form.email.label }} {{ form.email() }}
+
+                </div>	
+
+            </form>	
+
+            <form method="post"
+
+                <div class="formfield">
+
+                    {{ form.wachtwoord.label }} {{ form.wachtwoord() }}
+
+                    {{ form.submit() }}
+
+                </div>	
+
+            </form>	
+
+        </div>
+
+    </div>
+
+
+
+{%endblock%}

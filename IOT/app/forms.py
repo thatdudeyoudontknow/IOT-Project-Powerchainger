@@ -1,27 +1,19 @@
+from flask import Flask, render_template, session, redirect, url_for, flash
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField #, HiddenField, SelectField, DateTimeField, DateField, IntegerField
-from wtforms.validators import DataRequired, Email, EqualTo
+from wtforms import StringField, PasswordField, SubmitField,EmailField, HiddenField, SelectField, IntegerField
+from wtforms.validators import DataRequired, Email
 from wtforms import ValidationError
 
 
-
 class RegistrationForm(FlaskForm):
-    email = StringField('', validators=[DataRequired(),Email()])
-    username = StringField('', validators=[DataRequired()])
-    password = PasswordField('', validators=[DataRequired(), EqualTo('',    message='')])
-    pass_confirm = PasswordField('', validators=[DataRequired()])
-    submit = SubmitField('')
-    
-    def check_email(self, field):
-        if User.query.filter_by(email=field.data).first():
-            raise ValidationError('')
-    
-    def check_username(self, field):
-        if User.query.filter_by(username=field.data).first():
-            raise ValidationError('')
-            
-        
+    email = StringField('Email', validators=[DataRequired(),Email()])
+    gebruikersnaam = StringField('Gebruikersnaam', validators=[DataRequired()])
+    wachtwoord = PasswordField('Wachtwoord', validators=[DataRequired()])
+    submit = SubmitField('Registeren')
+
+
 class LoginForm(FlaskForm):
-    email = StringField('Email', validators=[DataRequired(), Email()])
-    password = PasswordField('wachtwoord', validators=[DataRequired()])
+    gebruikersnaam = StringField('Gebruikersnaam', validators=[DataRequired()])
+    wachtwoord = PasswordField('wachtwoord', validators=[DataRequired()])
     submit = SubmitField('Inloggen')
+

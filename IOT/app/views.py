@@ -1,15 +1,20 @@
+from app.forms import RegistrationForm
 from app import app
-from flask import Flask, jsonify, render_template, request
-from flask_login import LoginManager
+from flask import Flask, jsonify, render_template, request,redirect, request, url_for, flash, abort
+from flask_login import LoginManager,login_user, login_required, logout_user, current_user 
 import sqlite3
 from flask_cors import CORS
 import datetime
 import os
+<<<<<<< Updated upstream
 import json
 # from app import 
 # from app.forms import LoginForm
+=======
+>>>>>>> Stashed changes
 
-db = 'data.sqlite'
+
+app.config['SECRET_KEY'] = 'mijngeheimesleutel'
 
 @app.route("/")
 def home():
@@ -31,10 +36,62 @@ def graph():
 def vrienden():
     return render_template("public/vrienden.html")
 
-@app.route("/login", methods=["GET", "POST"])
+
+
+
+
+@app.route("/login", methods=['GET', 'POST'])
 def login2():
     return render_template("public/login2.html")
 
+
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+
+    form = RegistrationForm()
+
+    email = form.email.data
+    gebruikersnaam = form.gebruikersnaam.data
+    wachtwoord = form.wachtwoord.data
+
+    # database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
+    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+
+    # query = (f"INSERT INTO user (gebruikersnaam, wachtwoord) VALUES ({gebruikersnaam},{wachtwoord})")
+    cursor.execute("INSERT INTO user (gebruikersnaam, wachtwoord, email) VALUES (?, ?, ?);", (gebruikersnaam, wachtwoord, email))
+
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return render_template("public/registreren.html", form=form, gebruikersnaam=gebruikersnaam, wachtwoord=wachtwoord)    
+
+
+
+
+
+# @app.route('/login', methods=['GET', 'POST'])
+# def login():
+#     form = LoginForm()
+#     if form.validate_on_submit():
+
+#         login_user(user)
+
+#         flask.flash('Logged in successfully.')
+
+#         next = flask.request.args.get('next')
+#         if not url_has_allowed_host_and_scheme(next, request.host):
+#             return flask.abort(400)
+#         return flask.redirect(next or flask.url_for('index'))
+#     return render_template("public/login.html", form=form)
+
+
+
+
+    
 
 @app.route("/huidige_woning")
 def get_current_huisnaam():
@@ -96,28 +153,11 @@ def get_data():
     return jsonify(results)
 
 
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     form = LoginForm()
-#     if form.validate_on_submit():
-
-#         login_user(user)
-
-#         flask.flash('Logged in successfully.')
-
-#         next = flask.request.args.get('next')
-#         if not url_has_allowed_host_and_scheme(next, request.host):
-#             return flask.abort(400)
-#         return flask.redirect(next or flask.url_for('index'))
-#     return render_template("public/login.html", form=form)
-
-
-
 @app.route("/logout")
-# @login_required
+@login_required
 def logout():
     logout_user()
-    return redirect("/home")
+    return redirect("/login")
 
 
 # -----------------------------------------------------------------------------------
@@ -146,6 +186,8 @@ def search():
 
 if __name__ == '__main__':
     app.run()
+
+
 
 
 
