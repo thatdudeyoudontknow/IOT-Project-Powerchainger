@@ -5,16 +5,11 @@ from flask_login import LoginManager,login_user, login_required, logout_user, cu
 import sqlite3
 import datetime
 import os
-<<<<<<< HEAD
-from werkzeug.security import generate_password_hash
-=======
 <<<<<<< Updated upstream
 import json
 >>>>>>> 1167911d5df46c020bf95cf6fb071fb14f4ad2fb
 # from app import 
 # from app.forms import LoginForm
-=======
->>>>>>> Stashed changes
 
 
 app.config['SECRET_KEY'] = 'mijngeheimesleutel'
