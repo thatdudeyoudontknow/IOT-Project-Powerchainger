@@ -6,12 +6,9 @@ import sqlite3
 from flask_cors import CORS
 import datetime
 import os
-<<<<<<< Updated upstream
 import json
 # from app import 
 # from app.forms import LoginForm
-=======
->>>>>>> Stashed changes
 
 
 app.config['SECRET_KEY'] = 'mijngeheimesleutel'
