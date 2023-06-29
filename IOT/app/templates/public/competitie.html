@@ -12,21 +12,23 @@
 
 <div class="sociaal2">
     <p class="competitie">sociaal</p>
-    <div id="searchResults" class="search-results">
-        <div id="verbruikTable" class="vriendentabel"></div>
-    </div>
-    <div class="vriend-toevoeg-button">
-    <button id="openPopup">Voeg vrienden toe</button>
-    </div>
+    <div id="verbruikTable" class="vriendentabel"></div>
     <div id="popup" class="popup">
-        <div class="yellow-bar">
+        <div class="bar">
             Voeg vrienden toe
-            <button id="closePopup">Close</button>
+            <a class="sluitknop" href="{{url_for('competitie')}}">sluit</a>
         </div>
         <form id="searchForm" action="/search" method="POST">
             <input type="text" name="search_query" class="search-bar" placeholder="zoek op gebruikersnaam">
-            <input type="submit" value="zoek">
+            <input type="submit" value="zoek" id="zoek-knop">
         </form>
+        <div id="searchResults" class="search-results">
+        </div>
+
+    </div>
+
+    <div class="vriend-toevoeg-button">
+        <button id="openPopup">Voeg vrienden toe</button>
     </div>
 </div>
 

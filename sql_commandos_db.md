@@ -69,3 +69,11 @@ INSERT INTO "kamer" ("huisID", "kamernaam") VALUES (4,'31B');
 INSERT INTO "user" ("gebruikersnaam", "wachtwoord","email") VALUES ('Waldo','Welkom123', 'teassst@test.nl');
 INSERT INTO "HKU" ("huisID", "kamerID", "userID") VALUES (4,4,4);
 
+drop table HKU;
+drop table huis;
+drop table kamer;
+drop table user;
+drop table vrienden;
+drop table verbruik;
+
+

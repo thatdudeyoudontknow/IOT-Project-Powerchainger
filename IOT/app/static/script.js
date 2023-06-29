@@ -46,7 +46,7 @@ document.addEventListener('DOMContentLoaded', function () {
           const total = response.data.value;
           valueElement.textContent = `${total} KW`;
         } else {
-          valueElement.textContent = 'No data available';
+          valueElement.textContent = 'geen verbruik beschikbaar';
         }
       })
       .catch(error => {
@@ -66,6 +66,9 @@ document.addEventListener('DOMContentLoaded', function () {
   if (document.getElementById('huidig_verbruik')) {
     fetchVerbruik();
   }
+
+
+
 
 
   fetch('/data')
@@ -223,14 +226,22 @@ document.addEventListener('DOMContentLoaded', function () {
       console.error('Error:', error);
     });
 
-    var openPopupButton = document.getElementById('openPopup');
-    var popup = document.getElementById('popup');
-    var searchForm = document.getElementById('searchForm');
-    var searchResults = document.getElementById('searchResults');
+
+
+
+    if (window.location.pathname === '/competitie') {
+
+      var openPopupButton = document.getElementById('openPopup');
+      var popup = document.getElementById('popup');
+      var searchForm = document.getElementById('searchForm');
+      var searchResults = document.getElementById('searchResults');
+  
+
 
     openPopupButton.addEventListener('click', function() {
       popup.style.display = 'block';
     });
+
 
     searchForm.addEventListener('submit', function(e) {
       e.preventDefault();
@@ -265,5 +276,50 @@ document.addEventListener('DOMContentLoaded', function () {
       console.log("Error:", error);
     }
   });
-    
+
+  
+
+  var form = document.getElementById('selectedUsersForm');
+  form.addEventListener('submit', function(event) {
+    event.preventDefault(); // Prevent the default form submission
+
+    var selectedUsers = document.getElementsByName('selected_users');
+    var selectedUserIDs = [];
+
+    // Loop through the selected checkboxes and store the corresponding user IDs
+    for (var i = 0; i < selectedUsers.length; i++) {
+      if (selectedUsers[i].checked) {
+        selectedUserIDs.push(selectedUsers[i].value);
+      }
+    }
+
+    if (selectedUserIDs.length > 0) {
+      // Create a data object to send the selected user IDs
+      var data = JSON.stringify(selectedUserIDs);
+
+      // Create and configure a new XMLHttpRequest object
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/voeg_vrienden_toe', true);
+      xhr.setRequestHeader('Content-Type', 'application/json');
+
+      // Handle the response from the server
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          // Display the response from the server
+          document.getElementById('selectedUserIDs').textContent = xhr.responseText;
+        } else {
+          // Display an error message
+          document.getElementById('selectedUserIDs').textContent = 'Error: ' + xhr.statusText;
+        }
+      };
+
+      // Send the data to the server
+      xhr.send(data);
+    } else {
+      // Handle the case when no user IDs are selected
+      document.getElementById('selectedUserIDs').textContent = 'No user IDs selected.';
+    }
+  });
+
+    }
 });
