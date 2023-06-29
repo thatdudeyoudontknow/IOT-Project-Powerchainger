@@ -2,9 +2,9 @@ from app import app
 from flask import Flask, jsonify, render_template, request
 from flask_login import LoginManager
 import sqlite3
-from flask_cors import CORS
 import datetime
 import os
+from werkzeug.security import generate_password_hash
 # from app import 
 # from app.forms import LoginForm
 

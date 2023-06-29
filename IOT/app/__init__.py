@@ -20,6 +20,8 @@ app=Flask(__name__)
 # Hier importeren we de "views" module van onze app
 from app import views
 
+
+
 # Door het importeren van de "views" module -
 # zorgen we ervoor dat de routes en views in dat bestand -
 # worden uitgevoerd wanneer de app wordt opgestart. 
