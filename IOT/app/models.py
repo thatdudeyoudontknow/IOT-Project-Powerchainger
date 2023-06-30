@@ -1,9 +1,6 @@
-from app import db, app, login_manager
+from app.views import db, app, login_manager
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-
-db = SQLAlchemy(app)
-Migrate(app, db)
 
 @login_manager.user_loader
 def load_user(user_id):
@@ -15,7 +12,7 @@ with app.app_context():
 class HKU():
     __tablename__ ='HKU'
 
-    huisID = db.Column(db.Integer(), Primary_key = True )
+    huisID = db.Column(db.Integer(), primary_key = True )
     kamerID = db.Column(db.Integer(), ) 
     userId = db.Column(db.Integer(), )
 
@@ -33,24 +30,41 @@ class Kamer():
     kamerId = db.Column(db.Integer(),primary_key= True)
     kamernaam = db.Column()
 
-class User(db.Model,UserMixin):
+class User(db.Model, UserMixin):
     __tablename__ = 'user'
 
-    userId = db.Column(db.Integer(),primary_key= True)
-    gebruikersnaam = db.Column(db.String(32), nullable=False)
-    wachtwoord = db.Column(db.String(120), nullable=False)
-    email = db.Column(db.String(64), nullable=False)
+    id = db.Column(db.Integer(),primary_key= True)
+    email = db.Column(db.String(64), unique=True, nullable=False, index=True)
+    username = db.Column(db.String(32), unique=True, nullable=False, index=True)
+    password_hash = db.Column(db.String(120), nullable=False)
 
-    def __init__ (self, gebruikersnaam, wachtwoord, email):
-        self.gebruikersnaam = gebruikersnaam
-        self.wachtwoord = generate_password_hash(wachtwoord)
+    woonplaats = db.Column(db.String(40), nullable=False)
+    huisnummer = db.Column(db.Integer(), nullable=False)
+    toevoeging = db.Column(db.String(6), nullable=True)
+    straat = db.Column(db.String(40), nullable=False)
+    postcode = db.Column(db.String(6), nullable=False)
+    role = db.Column(db.String(20), nullable=False, default='user')
+
+
+
+    def __init__(self, email, username,password, woonplaats,huisnummer,straat,postcode,toevoeging,role='user'):
         self.email = email
+        self.username = username
+        self.password_hash = generate_password_hash(password)
+        self.woonplaats = woonplaats
+        self.huisnummer = huisnummer
+        self.toevoeging = toevoeging
+        self.straat = straat
+        self.postcode = postcode
+        self.role = role
 
-    def check_password(self, wachtwoord):
-        return check_password_hash(self.wachtwoord, wachtwoord)
+
+    def check_password(self, password):
+        return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
         return f"Welkom, {self.username}"
+
 
 class Vrienden():
     __tablename__ ='vrienden'

@@ -1,59 +1,32 @@
-{%extends "public/templates/iot_template.html"%}
+{% extends "public/templates/iot_template.html" %}
+
+{% block main %}
+
+<div class="outlinelogin">
 
 
-{%block main%}
-
-
-
-    <div class="outlinelogin">
-
-        <div class="inlineregistratie">
-            
-            <p class="home">registreren</p>
-
-            <form method="post">
-                <div class="formfield">
-                    Gebruikersnaam: <input type="text" name="gebruikersnaam" fdprocessedid="42s6cn">
+    <div class="container mt-2">
+        <div class="row justify-content-md-center">
+            <div class="col col-lg-3 col-md-8 col-sm-10">
+                <form method="POST">
+                    {{ form.hidden_tag() }}
+                <div class="mb-2">
+                    {{ form.email.label(class="form-label") }} 
+                    {{ form.email(class="form-control") }}
                 </div>
-                <div class="formfield">
-                    Wachtwoord: <input type="password" name="wachtwoord" fdprocessedid="2uvn2">
+                <div class="mb-2">
+                    {{ form.password.label(class="form-label") }} 
+                    {{ form.password( class="form-control") }}
+                    </div>
+                    {{ form.submit(class="btn btn-primary") }}
+                </form>
 
-                    <input type="submit" value="Registreren" fdprocessedid="x8azr9">
-                </div>	
-                <p style="color: red;">{{ foutmelding }}</p>
-            </form>	
-
+                </a>
+            </div>
+    
         </div>
-
         
-        <div class="inlinelogin">
-            
-            <p class="home">login</p>
-
-            <form method="post">
-
-                <div class="formfield">
-                    
-                    <label for="gebruikersnaam">Gebruikersnaam:</label>
-                    <input type="text" name="gebruikersnaam_login" value="{{ form_gebruikersnaam }}" fdprocessedid="42s6cn">
-
-                </div>
-
-                <div class="formfield">
-
-                    <label for="gebruikersnaam">Wachtwoord:</label>
-                    <input type="wachtwoord" name="wachtwoord" fdprocessedid="2uvn2">
-
-
-                    <input type="submit" value="Inloggen" fdprocessedid="x8azr9">
-                </div>	
-                <p style="color: red;">{{ foutmelding }}</p>
-            </form>	
-
-        </div>
-
     </div>
+</div>
 
-
-
-{%endblock%}
+{% endblock %}

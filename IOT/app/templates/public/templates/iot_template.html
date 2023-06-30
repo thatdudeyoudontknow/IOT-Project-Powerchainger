@@ -32,20 +32,28 @@
 
       
       <!-- Top searchbar -->
-        <div class="searchbarbox">
-
-          <p class="search"> search</p>
-
-          <div class="searchbar"></div>
-
+        <div class="loggenbox">
+          <div class="search">
+          {% if current_user.is_authenticated %}
+          <li><a class="nav-link" href="{{ url_for('logout') }}">Uitloggen</a></li>
+          {% else %}
+            <li><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+            <li><a class="nav-link" href="{{ url_for('register') }}">Registreren</a></li>
+            {% endif %}
+          </div>
         </div>
+
       <!-- Top searchbar -->
 
 
       <!-- Top inlog -->
         <div class="inlog" id="navbarNav">
           <ul>
-            <li><a class="button" href="{{url_for('register')}}">login</a></li>
+            {% if current_user.is_authenticated %}
+            <li><a class ="welkom" href="{{ url_for('home')}}">{{ name }}</a></li>
+          {% else %}
+          <li><a class="nav-link">Welkom</a></li>
+            {% endif %}
           </ul>
         </div>
       <!-- Top inlog -->

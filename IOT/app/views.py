@@ -1,22 +1,38 @@
-from app.forms import RegistrationForm
+# from app.forms import RegistrationForm
+import os
 from app import app
 from flask import Flask, jsonify, render_template, request,redirect, request, url_for, flash, abort
 from flask_login import LoginManager,login_user, login_required, logout_user, current_user 
+from flask_sqlalchemy import SQLAlchemy
+from flask_wtf import FlaskForm
+from werkzeug.urls import url_parse
+from werkzeug.security import generate_password_hash
+from functools import wraps
 import sqlite3
 import datetime
-import os
-<<<<<<< Updated upstream
 import json
->>>>>>> 1167911d5df46c020bf95cf6fb071fb14f4ad2fb
-# from app import 
-# from app.forms import LoginForm
 
 
-app.config['SECRET_KEY'] = 'mijngeheimesleutel'
+app.config['SECRET_KEY'] = 'X11gc3N5hb78RGyKY4qk5qHZ8aqC4Ch7'
+
+basedir = os.path.abspath(os.path.dirname(__file__))
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = "login"
+
+db = SQLAlchemy(app)
+
+
+from app.models import User 
+from app.forms import RegistrationForm, LoginForm
+
 
 @app.route("/")
 def home():
-    return render_template("public/home.html")
+    return render_template("public/home.html", name=current_user)
 
 @app.route("/competitie")
 def competitie():
@@ -35,58 +51,80 @@ def vrienden():
     return render_template("public/vrienden.html")
 
 
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash(u'Je bent nu uitgelogd!', 'success')
+    return redirect(url_for('home'))
 
 
-
-@app.route("/login", methods=['GET', 'POST'])
-def login2():
-    return render_template("public/login2.html")
-
-
-@app.route("/register", methods=['GET', 'POST'])
+@app.route('/register', methods=['GET', 'POST'])
 def register():
-
     form = RegistrationForm()
+    if form.validate_on_submit():
+        user_email = User.query.filter_by(email=form.email.data).first()
+        user_username = User.query.filter_by(username=form.username.data).first()
 
-    email = form.email.data
-    gebruikersnaam = form.gebruikersnaam.data
-    wachtwoord = form.wachtwoord.data
+        if user_email:
+            flash(u'Dit emailadres is al in gebruik. Kies een ander emailadres.', 'warning')
+        elif user_username:
+            flash(u'Deze gebruikersnaam is al in gebruik. Kies een andere gebruikersnaam.', 'warning')
 
-    # database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
-    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
-    conn = sqlite3.connect(database_path)
-    cursor = conn.cursor()
+        else:
+            user = User(email=form.email.data,
+                        username=form.username.data,
+                        password=form.password.data,
+                        woonplaats=form.woonplaats.data,
+                        huisnummer=form.huisnummer.data,
+                        toevoeging=form.toevoeging.data,
+                        straat=form.straat.data,
+                        postcode=form.postcode.data)
 
-    # query = (f"INSERT INTO user (gebruikersnaam, wachtwoord) VALUES ({gebruikersnaam},{wachtwoord})")
-    cursor.execute("INSERT INTO user (gebruikersnaam, wachtwoord, email) VALUES (?, ?, ?);", (gebruikersnaam, wachtwoord, email))
-
-
-    conn.commit()
-    cursor.close()
-    conn.close()
-
-    return render_template("public/registreren.html", form=form, gebruikersnaam=gebruikersnaam, wachtwoord=wachtwoord)    
-
-
-
-
-
-# @app.route('/login', methods=['GET', 'POST'])
-# def login():
-#     form = LoginForm()
-#     if form.validate_on_submit():
-
-#         login_user(user)
-
-#         flask.flash('Logged in successfully.')
-
-#         next = flask.request.args.get('next')
-#         if not url_has_allowed_host_and_scheme(next, request.host):
-#             return flask.abort(400)
-#         return flask.redirect(next or flask.url_for('index'))
-#     return render_template("public/login.html", form=form)
+            db.session.add(user)
+            db.session.commit()
 
 
+
+            flash(u'Dank voor de registratie. Er kan nu ingelogd worden! ', 'success')
+            return redirect(url_for('login'))
+    elif form.email.errors:
+        flash(u'Dit email is incorrect')    
+
+    elif form.postcode.errors:
+        flash(u'ongeldige postcode')
+    
+    elif form.woonplaats.errors:
+        flash(u'ongeldige woonplaats')
+              
+    elif form.straat.errors:
+        flash(u'ongeldige straatnaam')
+
+    elif form.password.errors:
+        flash(u'Wachtwoord komt niet overeen')
+
+    return render_template('public/registreren.html', form=form)
+
+
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    if form.validate_on_submit():
+        user = User.query.filter_by(email=form.email.data).first()
+        if user is not None and user.check_password(form.password.data):
+            login_user(user)
+            flash(u'Succesvol ingelogd.', 'success')
+    
+            next = request.args.get('next')
+            if not next or url_parse(next).netloc != '':
+                next = url_for('home')
+            return redirect(url_parse(next).path)
+        
+        else:
+            print(u'U email of wachtwoord is niet correct.', 'warning')     
+    elif form.email.errors:  
+        print(u'u email is niet bestaand', 'warning')
+    return render_template('public/login2.html', form=form) 
 
 
     
@@ -151,13 +189,6 @@ def get_data():
     return jsonify(results)
 
 
-@app.route("/logout")
-@login_required
-def logout():
-    logout_user()
-    return redirect("/login")
-
-
 # -----------------------------------------------------------------------------------
 # het zoeken van vrienden
 
@@ -173,7 +204,7 @@ def search():
     cursor = conn.cursor()
 
     # Execute the search query
-    cursor.execute("SELECT gebruikersnaam FROM user WHERE gebruikersnaam LIKE ?", ('%' + search_query + '%',))
+    cursor.execute("SELECT gebruikersnaam, userID FROM user WHERE gebruikersnaam LIKE ?", ('%' + search_query + '%',))
     results = cursor.fetchall()
 
     # Close the database connection
@@ -184,8 +215,6 @@ def search():
 
 if __name__ == '__main__':
     app.run()
-
-
 
 
 
@@ -310,70 +339,84 @@ def dagverbruik():
 # -----------------------------------------------------------------------------------
 # verzend de vrienden ID's naar de database
 
-# @app.route('/voeg_vrienden_toe', methods=['POST'])
-# def voeg_vrienden_toe():
-#     selected_user_ids = None
-#     print('Request Data:', request.data)
+@app.route('/process_users', methods=['POST'])
+def process_users():
+    userID = 1 
+    selected_user_ids = request.form.getlist('userID')
+    
+    # Connect to the SQLite database
+    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
 
-#     try:
-#         selected_user_ids = json.loads(request.data)
-#     except json.JSONDecodeError as e:
-#         print('JSON Decode Error:', e)
+    # Create the "verzoeken" table if it doesn't exist
+    cursor.execute('''CREATE TABLE IF NOT EXISTS verzoeken (
+        verzoekID INTEGER PRIMARY KEY AUTOINCREMENT,
+        userID INTEGER NOT NULL,
+        vriendenID INTEGER NOT NULL,
+        status TEXT,
+        FOREIGN KEY(userID) REFERENCES user(userID),
+        FOREIGN KEY(vriendenID) REFERENCES user(userID)
+    )''')
 
-#     selected_user_ids = json.loads(request.data)
+    # Insert invitation records for selected users
+    for user_id in selected_user_ids:
+        cursor.execute("INSERT INTO verzoeken (userID, vriendenID, status) VALUES (?, ?, ?)",
+                       (userID, user_id, "pending"))
 
-#     # Connect to the SQLite database and store the selected user IDs
-#     # database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
-#     # conn = sqlite3.connect(database_path)
-#     # cursor = conn.cursor()
+    # Commit the changes and close the database connection
+    conn.commit()
+    cursor.close()
+    conn.close()
+    
+    flash("Invitations sent successfully", "success")
 
-#     # # Execute an INSERT statement to store the selected user IDs in the "vrienden" table
-#     # query = "INSERT INTO vrienden (userID, vriendenID) VALUES (?, ?)"
-#     # cursor.executemany(query, [(user_id, vrienden_id) for user_id in selected_user_ids for vrienden_id in selected_user_ids])
-
-#     # # Commit the changes and close the database connection
-#     # conn.commit()
-#     # conn.close()
-
-#     # Retrieve the necessary data for rendering the checkboxes
-#     results = get_results()  # Replace this with your actual data retrieval logic
-
-#     print(results)  # Print the contents of the results variable
-#     return render_template('your_template.html', results=results)
-
-
-@app.route('/voeg_vrienden_toe', methods=['POST'])
-def voeg_vrienden_toe():
-    selected_user_ids = None
-    print('Request Data:', request.data)
-
-    try:
-        selected_user_ids = json.loads(request.data)
-    except json.JSONDecodeError as e:
-        print('JSON Decode Error:', e)
-
-    selected_user_ids = json.loads(request.data)
-
-    # Connect to the SQLite database and store the selected user IDs
-    # database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
-    # conn = sqlite3.connect(database_path)
-    # cursor = conn.cursor()
-
-    # # Execute an INSERT statement to store the selected user IDs in the "vrienden" table
-    # query = "INSERT INTO vrienden (userID, vriendenID) VALUES (?, ?)"
-    # cursor.executemany(query, [(user_id, vrienden_id) for user_id in selected_user_ids for vrienden_id in selected_user_ids])
-
-    # # Commit the changes and close the database connection
-    # conn.commit()
-    # conn.close()
-
-    # Retrieve the necessary data for rendering the checkboxes
-    results = get_results()  # Replace this with your actual data retrieval logic
-
-    print('Selected User IDs:', selected_user_ids)  # Print the selected user IDs
-    print(results)  # Print the contents of the results variable
-    return render_template('competitie.html', results=results)
+    return redirect(url_for('competitie'))
 
 
+# -----------------------------------------------------------------------------------
+# zorg dat de vriendverzoek ontvangen word en geacepteerd of afgeslagen kan worden
 
 
+@app.route('/accept_decline_invitation/<int:invitation_id>', methods=['GET', 'POST'])
+def accept_decline_invitation(invitation_id):
+    # Connect to the SQLite database
+    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+
+    # Retrieve the invitation details from the "verzoeken" table
+    cursor.execute("SELECT userID, vriendenID, status FROM verzoeken WHERE verzoekID = ?", (invitation_id,))
+    invitation = cursor.fetchone()
+
+    # Check if the invitation exists
+    if invitation is None:
+        return "Invitation not found"
+
+    inviter_id, invitee_id, status = invitation
+
+    if request.method == 'GET':
+        return render_template('verzoek.html', inviter_id=inviter_id, invitee_id=invitee_id)
+
+    elif request.method == 'POST':
+        # Retrieve the user's response (accept or decline) from the form
+        response = request.form.get('response')
+
+        # Update the invitation status in the database based on the response
+        if response == 'accept':
+            new_status = 'accepted'
+        elif response == 'decline':
+            new_status = 'declined'
+        else:
+            return "Invalid response"
+
+        cursor.execute("UPDATE verzoeken SET status = ? WHERE verzoekID = ?", (new_status, invitation_id))
+        conn.commit()
+
+        cursor.close()
+        conn.close()
+
+        return "Invitation response recorded"
+
+    cursor.close()
+    conn.close()

@@ -1,35 +1,32 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <script src="{{ url_for('static', filename='script.js') }}"></script>
   <title>Search Results</title>
 </head>
 <body>
-  <form id="selectedUsersForm" action="/voeg_vrienden_toe" method="POST"> <!-- Form for submitting selected userIDs -->
-    {% if results %}
-      <h3>gebruikersnamen:</h3>
+  {% if results %}
+    <h3>Gebruikersnamen:</h3>
+    <form id="selectUsersForm" action="/process_users" method="POST">
       <table>
         <tr>
-          <th></th> <!-- Empty header for the checkbox column -->
+          <th>Select</th>
           {% for column in columns %}
             <th>{{ column }}</th>
           {% endfor %}
         </tr>
         {% for result in results %}
           <tr>
-            <td><input type="checkbox" name="selected_users" value="{{ result.userID }}"></td> <!-- Checkbox column -->
+            <td><input type="checkbox" name="userID" value="{{ result[1] }}"></td>
             {% for value in result %}
               <td>{{ value }}</td>
             {% endfor %}
           </tr>
         {% endfor %}
       </table>
-      <button type="submit" id="okButton">OK</button> <!-- Submit button to send selected userIDs -->
-    {% else %}
-      <div>No results found.</div>
-    {% endif %}
-  </form>
-  <div id="selectedUserIDs"></div> <!-- Space to display selected user IDs -->
-
+      <input type="submit" value="Process Selected Users">
+    </form>
+  {% else %}
+    <div>No results found.</div>
+  {% endif %}
 </body>
 </html>

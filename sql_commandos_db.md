@@ -23,10 +23,17 @@ CREATE TABLE "kamer" (
 
 
 CREATE TABLE "user" (
-	"userID"	INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-	"gebruikersnaam"	TEXT NOT NULL,
-	"wachtwoord"	TEXT NOT NULL,
-	"email"	TEXT NOT NULL
+	"id"	INTEGER NOT NULL,
+	"email"	VARCHAR(64) NOT NULL,
+	"username"	VARCHAR(32) NOT NULL,
+	"password_hash"	VARCHAR(120) NOT NULL,
+	"woonplaats"	VARCHAR(40) NOT NULL,
+	"huisnummer"	INTEGER NOT NULL,
+	"toevoeging"	VARCHAR(6),
+	"straat"	VARCHAR(40) NOT NULL,
+	"postcode"	VARCHAR(6) NOT NULL,
+	"role"	VARCHAR(20) NOT NULL,
+	PRIMARY KEY("id")
 );
 
 CREATE TABLE "vrienden" (
@@ -35,6 +42,16 @@ CREATE TABLE "vrienden" (
 	PRIMARY KEY("vriendenID","userID"),
 	FOREIGN KEY("userID") REFERENCES "user"("userID"),
 	FOREIGN KEY("vriendenID") REFERENCES "user"("userID")
+);
+
+CREATE TABLE "verzoeken" (
+	"verzoekID"	INTEGER NOT NULL,
+	"userID"	INTEGER NOT NULL,
+	"vriendenID"	INTEGER NOT NULL,
+	"status"	TEXT,
+	FOREIGN KEY("userID") REFERENCES "user"("userID"),
+	FOREIGN KEY("vriendenID") REFERENCES "user"("userID"),
+	PRIMARY KEY("verzoekID" AUTOINCREMENT)
 );
 
 CREATE TABLE "verbruik" (
@@ -75,5 +92,6 @@ drop table kamer;
 drop table user;
 drop table vrienden;
 drop table verbruik;
+drop table verzoeken;
 
 
