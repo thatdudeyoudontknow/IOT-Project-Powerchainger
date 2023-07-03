@@ -26,8 +26,8 @@ login_manager.login_view = "login"
 db = SQLAlchemy(app)
 
 
-from app.models import User 
-from app.forms import RegistrationForm, LoginForm
+from app.models import User , Kamer, Huis, HKU
+from app.forms import RegistrationForm, LoginForm, HuisForm, KamerForm
 
 
 @app.route("/")
@@ -36,19 +36,19 @@ def home():
 
 @app.route("/competitie")
 def competitie():
-    return render_template("public/competitie.html")
+    return render_template("public/competitie.html", name=current_user)
 
 @app.route("/bezuinigen")
 def bezuinigen():
-    return render_template("public/bezuinigen.html")
+    return render_template("public/bezuinigen.html", name=current_user)
 
 @app.route("/graph")
 def graph():
-    return render_template("public/graph.html")
+    return render_template("public/graph.html", name=current_user)
 
 @app.route("/vrienden")
 def vrienden():
-    return render_template("public/vrienden.html")
+    return render_template("public/vrienden.html", name=current_user)
 
 
 @app.route('/logout')
@@ -75,11 +75,7 @@ def register():
             user = User(email=form.email.data,
                         username=form.username.data,
                         password=form.password.data,
-                        woonplaats=form.woonplaats.data,
-                        huisnummer=form.huisnummer.data,
-                        toevoeging=form.toevoeging.data,
-                        straat=form.straat.data,
-                        postcode=form.postcode.data)
+                        )
 
             db.session.add(user)
             db.session.commit()
@@ -91,19 +87,52 @@ def register():
     elif form.email.errors:
         flash(u'Dit email is incorrect')    
 
-    elif form.postcode.errors:
-        flash(u'ongeldige postcode')
-    
-    elif form.woonplaats.errors:
-        flash(u'ongeldige woonplaats')
-              
-    elif form.straat.errors:
-        flash(u'ongeldige straatnaam')
-
     elif form.password.errors:
         flash(u'Wachtwoord komt niet overeen')
 
     return render_template('public/registreren.html', form=form)
+
+
+@app.route('/huisconfig', methods=['GET', 'POST'])
+def huisconfig():
+    form = HuisForm()
+    kamer_form = KamerForm()
+
+    if form.validate_on_submit() and kamer_form.validate_on_submit():
+        # Create a new huis instance
+        huis = Huis(
+            woonplaats=form.woonplaats.data,
+            huisnummer=form.huisnummer.data,
+            toevoeging=form.toevoeging.data,
+            straat=form.straat.data,
+            postcode=form.postcode.data
+        )
+
+        # Create a new kamer instance
+        kamer = Kamer(
+            huisnummer=kamer_form.huisnummer.data,
+            kamernaam=kamer_form.kamernaam.data
+        )
+
+        # Add the huis and kamer to the database
+        db.session.add(huis)
+        db.session.add(kamer)
+        db.session.commit()
+
+        # hku = HKU(
+        #     huisID=huis.huisID,
+        #     kamerID=kamer.kamerID,
+        #     userID=current_user.id 
+        # )
+
+        # # Add the HKU to the database
+        # db.session.add(hku)
+        # db.session.commit()
+
+        flash('de registratie is gelukt', 'success')
+
+
+    return render_template('public/huisconfig.html', form=form, kamer_form=kamer_form, name=current_user)
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -131,7 +160,7 @@ def login():
 
 @app.route("/huidige_woning")
 def get_current_huisnaam():
-    userID = 1  # Replace with the actual current user ID
+    userID = current_user.id # Replace with the actual current user ID
 
     # Connect to the SQLite database
     database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
@@ -160,7 +189,7 @@ def get_current_huisnaam():
 # data dat word uit de database gehaald voor de grafiek
 @app.route("/data")
 def get_data():
-    userID = 1
+    userID = current_user.id
     # Connect to the SQLite database
     database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
 
@@ -204,7 +233,7 @@ def search():
     cursor = conn.cursor()
 
     # Execute the search query
-    cursor.execute("SELECT gebruikersnaam, userID FROM user WHERE gebruikersnaam LIKE ?", ('%' + search_query + '%',))
+    cursor.execute("SELECT username, id FROM user WHERE username LIKE ?", ('%' + search_query + '%',))
     results = cursor.fetchall()
 
     # Close the database connection
@@ -235,9 +264,9 @@ def get_total_vrienden():
 
     # Execute a query to retrieve the sum of verbruik values for each user and the current day
     query = """
-        SELECT user.gebruikersnaam, SUM(verbruik.verbruik)
+        SELECT user.username, SUM(verbruik.verbruik)
         FROM verbruik
-        JOIN user ON verbruik.userID = user.userID
+        JOIN user ON verbruik.userID = user.id
         WHERE verbruik.huisID IN (SELECT huisID FROM HKU WHERE userID IN ({user_ids_placeholder}))
             AND DATE(verbruik.datetime) = DATE('now', 'localtime')
         GROUP BY verbruik.userID
@@ -267,7 +296,7 @@ def get_total_vrienden():
 # huidig verbruik van de huidige gebruiker
 @app.route('/huidig_verbruik')
 def get_current():
-    userID = 1
+    userID = current_user.id
     # Get the absolute path of the database file in the current directory
     database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
 
@@ -299,7 +328,7 @@ def get_current():
 # verbruik per dag van de huidige gebruiker
 @app.route('/verbruik_per_dag')
 def dagverbruik():
-    userID = 1
+    userID = current_user.id
 
     # Get the absolute path of the database file in the current directory
     database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
@@ -310,9 +339,9 @@ def dagverbruik():
 
     # Execute a query to retrieve the sum of verbruik values for the user and the current day
     query = """
-        SELECT user.gebruikersnaam, SUM(verbruik.verbruik)
+        SELECT user.username, SUM(verbruik.verbruik)
         FROM verbruik
-        JOIN user ON verbruik.userID = user.userID
+        JOIN user ON verbruik.userID = user.id
         WHERE verbruik.huisID IN (SELECT huisID FROM HKU WHERE userID = ?)
             AND DATE(verbruik.datetime) = DATE('now', 'localtime')
         GROUP BY verbruik.userID
