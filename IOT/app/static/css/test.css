@@ -15,7 +15,7 @@
 }
 
 .navbar {
-  background: gray;
+  /* background: gray; */
   margin: 1%;
   display: flex;
   align-items: center;
@@ -34,14 +34,45 @@
   color: white;
   text-decoration: none;
   font-size: 24px;
-  line-height: 90px; /* Adjust the line-height to match the logo height */
-  background: blueviolet;
+  line-height: 60px; /* Adjust the line-height to match the logo height */
+  background: rgb(255, 255, 255);
   /* border-block-color: black; */
   /* border: black; */
   border-radius: 20px;
 }
-.links{
-  background-color: black;
-  /* width: fit-content; */
-  display: -webkit-inline-box;
+
+.navrechts {
+  display: inline-block;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 24px;
+  line-height: 60px; /* Adjust the line-height to match the logo height */
+  background: rgb(255, 255, 255);
+  border-radius: 20px;
+  margin-left: auto;
 }
+
+.navlinks a.active {
+  background: rgb(26, 24, 24);
+  padding: 18px;
+  border-radius: 20px;
+}
+
+.navlinks a:hover {
+  background: rgba(43, 226, 107, 0.8); /* Adjust the opacity (0.8) as desired */
+}
+
+.navrechts a.active {
+  background: rgb(237, 2, 2);
+}
+
+.navrechts a:hover {
+  background: rgba(43, 226, 107, 0.8); /* Adjust the opacity (0.8) as desired */
+}
+
+.losse_navbutton{
+  color: rgb(0, 0, 0);
+}
+
+

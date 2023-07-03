@@ -16,22 +16,45 @@
           src="https://www.powerchainger.nl/wp-content/uploads/powerchainger-logo.svg">
       </div>
       <div class="navlinks">
-        <a class="links {% if request.path == url_for('home') %}active{% endif %}" aria-current="page"
-          href="{{ url_for('home') }}">home</a>
-        <a class="{% if request.path == url_for('competitie') %}active{% endif %}" aria-current="page"
-          href="{{ url_for('competitie') }}">competitie</a>
-          <a class="{% if request.path == url_for('home') %}active{% endif %}" aria-current="page"
-          href="{{ url_for('home') }}">home</a>
-        <a class="{% if request.path == url_for('competitie') %}active{% endif %}" aria-current="page"
-          href="{{ url_for('competitie') }}">competitie</a>
-          <a class="{% if request.path == url_for('home') %}active{% endif %}" aria-current="page"
-          href="{{ url_for('home') }}">home</a>
-        <a class="{% if request.path == url_for('competitie') %}active{% endif %}" aria-current="page"
-          href="{{ url_for('competitie') }}">competitie</a>
-          <a class="{% if request.path == url_for('home') %}active{% endif %}" aria-current="page"
-          href="{{ url_for('home') }}">home</a>
-        <a class="{% if request.path == url_for('competitie') %}active{% endif %}" aria-current="page"
-          href="{{ url_for('competitie') }}">competitie</a>
+
+        <a class="losse_navbutton {% if request.path == url_for('home') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('home') }}">Home</a>
+
+        <a class="losse_navbutton {% if request.path == url_for('competitie') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('competitie') }}">Competitie</a>
+
+        <a class="losse_navbutton {% if request.path == url_for('home') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('bezuinigen') }}">Bezuinigen</a>
+
+        <a class="losse_navbutton {% if request.path == url_for('test') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('test') }}">test</a>
+
+        {% if current_user.is_authenticated %}
+          
+          <a class="losse_navbutton {% if request.path == url_for('huisconfig') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('huisconfig') }}">{{ name }} Huisconfig</a>
+
+        {% endif %}
+
+
+      </div>
+      <div class="navrechts">
+        {% if current_user.is_authenticated %}
+          
+        <a class="losse_navbutton {% if request.path == url_for('huisconfig') %}active{% endif %}" aria-current="page"
+        href="{{ url_for('huisconfig') }}">{{ name }} Huisconfig</a>
+
+        <a class="losse_navbutton {% if request.path == url_for('logout') %}active{% endif %}" aria-current="page"
+        href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
+
+        <a class="losse_navbutton {% if request.path == url_for('login') %}active{% endif %}" aria-current="page"
+        href="{{ url_for('login') }}">Login</a>
+
+        <a class="losse_navbutton {% if request.path == url_for('register') %}active{% endif %}" aria-current="page"
+        href="{{ url_for('register') }}">Registreren</a>
+      {% endif %}
+
       </div>
     </nav>
   </div>
