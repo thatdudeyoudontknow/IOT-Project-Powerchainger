@@ -420,3 +420,7 @@ def accept_decline_invitation(invitation_id):
 
     cursor.close()
     conn.close()
+
+@app.route("/test")
+def test():
+    return render_template("public/test.html")

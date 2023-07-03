@@ -1,0 +1,47 @@
+
+.outline_geel_achtergrond {
+  position: absolute;
+  width: 97%;
+  height: 97%;
+  left: 1.5%;
+  top: 2%;
+  right: 2%;
+  bottom: 2%;
+  background: #F8C232;
+  border-radius: 20px;
+  font-family: monospace;
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.navbar {
+  background: gray;
+  margin: 1%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.powerchainger_logo {
+  width: 150px; /* Adjust the width as desired */
+  height: auto;
+  margin-right: 10px;
+}
+
+.navlinks {
+  display: inline-block;
+  padding: 12px;
+  color: white;
+  text-decoration: none;
+  font-size: 24px;
+  line-height: 90px; /* Adjust the line-height to match the logo height */
+  background: blueviolet;
+  /* border-block-color: black; */
+  /* border: black; */
+  border-radius: 20px;
+}
+.links{
+  background-color: black;
+  /* width: fit-content; */
+  display: -webkit-inline-box;
+}

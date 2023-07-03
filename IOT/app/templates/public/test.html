@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+<head>
+  <link type="text/css" href="{{url_for('static',filename='css/test.css')}}" rel="stylesheet">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>IOT Project</title>
+</head>
+
+<body>
+  <div class="outline_geel_achtergrond">
+    <nav class="navbar">
+      <div class="logo_site">
+        <img class="powerchainger_logo" alt="powerchainger_logo"
+          src="https://www.powerchainger.nl/wp-content/uploads/powerchainger-logo.svg">
+      </div>
+      <div class="navlinks">
+        <a class="links {% if request.path == url_for('home') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('home') }}">home</a>
+        <a class="{% if request.path == url_for('competitie') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('competitie') }}">competitie</a>
+          <a class="{% if request.path == url_for('home') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('home') }}">home</a>
+        <a class="{% if request.path == url_for('competitie') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('competitie') }}">competitie</a>
+          <a class="{% if request.path == url_for('home') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('home') }}">home</a>
+        <a class="{% if request.path == url_for('competitie') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('competitie') }}">competitie</a>
+          <a class="{% if request.path == url_for('home') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('home') }}">home</a>
+        <a class="{% if request.path == url_for('competitie') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('competitie') }}">competitie</a>
+      </div>
+    </nav>
+  </div>
+</body>
+
+</html>
