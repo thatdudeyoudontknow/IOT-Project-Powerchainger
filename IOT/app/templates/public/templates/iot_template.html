@@ -50,7 +50,7 @@
         <div class="inlog" id="navbarNav">
           <ul>
             {% if current_user.is_authenticated %}
-            <li><a class ="welkom" href="{{ url_for('home')}}">{{ name }}</a></li>
+            <li><a class ="welkom" href="{{ url_for('huisconfig')}}">{{ name }}</a></li>
           {% else %}
           <li><a class="nav-link">Welkom</a></li>
             {% endif %}

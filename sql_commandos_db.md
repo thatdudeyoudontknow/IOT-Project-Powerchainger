@@ -1,70 +1,63 @@
 CREATE TABLE "HKU" (
-	"huisID"	INTEGER NOT NULL,
-	"kamerID"	INTEGER NOT NULL,
-	"userID"	INTEGER NOT NULL,
-	PRIMARY KEY("huisID","kamerID","userID"),
-	FOREIGN KEY("huisID") REFERENCES "huis"("huisID"),
-	FOREIGN KEY("kamerID") REFERENCES "kamer"("kamerID"),
-	FOREIGN KEY("userID") REFERENCES "user"("userID")
+    "huisID" INTEGER PRIMARY KEY,
+    "kamerID" INTEGER,
+    "userId" INTEGER
 );
 
 CREATE TABLE "huis" (
-	"huisID"	INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-	"huisnaam"	TEXT NOT NULL,
-	"verbruik_per_huis"	REAL
+    "huisID" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "userID" INTEGER,
+    "huisnaam" TEXT,
+    "woonplaats" TEXT NOT NULL,
+    "huisnummer" INTEGER NOT NULL,
+    "toevoeging" TEXT,
+    "straat" TEXT NOT NULL,
+    "postcode" TEXT NOT NULL
 );
 
 CREATE TABLE "kamer" (
-	"huisID"	INTEGER NOT NULL,
-	"kamerID"	INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
-	"kamernaam" TEXT NOT NULL,
-	FOREIGN KEY("huisID") REFERENCES "huis"("huisID")
+    "kamerID" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "kamernaam" TEXT NOT NULL,
+    "huisnummer" INTEGER NOT NULL,
+    "userID" INTEGER
 );
 
 
 CREATE TABLE "user" (
-	"id"	INTEGER NOT NULL,
-	"email"	VARCHAR(64) NOT NULL,
-	"username"	VARCHAR(32) NOT NULL,
-	"password_hash"	VARCHAR(120) NOT NULL,
-	"woonplaats"	VARCHAR(40) NOT NULL,
-	"huisnummer"	INTEGER NOT NULL,
-	"toevoeging"	VARCHAR(6),
-	"straat"	VARCHAR(40) NOT NULL,
-	"postcode"	VARCHAR(6) NOT NULL,
-	"role"	VARCHAR(20) NOT NULL,
-	PRIMARY KEY("id")
+    "id" INTEGER PRIMARY KEY,
+    "email" TEXT NOT NULL UNIQUE,
+    "username" TEXT NOT NULL UNIQUE,
+    "password_hash" TEXT NOT NULL
 );
 
 CREATE TABLE "vrienden" (
-	"userID"	INTEGER NOT NULL,
-	"vriendenID"	INTEGER NOT NULL,
-	PRIMARY KEY("vriendenID","userID"),
-	FOREIGN KEY("userID") REFERENCES "user"("userID"),
-	FOREIGN KEY("vriendenID") REFERENCES "user"("userID")
+    "userID" INTEGER,
+    "vriendenID" INTEGER,
+    PRIMARY KEY ("vriendenID", "userID"),
+    FOREIGN KEY ("userID") REFERENCES "user" ("id"),
+    FOREIGN KEY ("vriendenID") REFERENCES "user" ("id")
 );
 
 CREATE TABLE "verzoeken" (
-	"verzoekID"	INTEGER NOT NULL,
-	"userID"	INTEGER NOT NULL,
-	"vriendenID"	INTEGER NOT NULL,
-	"status"	TEXT,
-	FOREIGN KEY("userID") REFERENCES "user"("userID"),
-	FOREIGN KEY("vriendenID") REFERENCES "user"("userID"),
-	PRIMARY KEY("verzoekID" AUTOINCREMENT)
+    "verzoekID" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "userID" INTEGER NOT NULL,
+    "vriendenID" INTEGER NOT NULL,
+    "status" TEXT,
+    FOREIGN KEY ("userID") REFERENCES "user" ("id"),
+    FOREIGN KEY ("vriendenID") REFERENCES "user" ("id")
 );
 
 CREATE TABLE "verbruik" (
-	"huisID"	INTEGER NOT NULL,
-	"kamerID"	INTEGER NOT NULL,
-	"userID"	INTEGER NOT NULL,
-	"verbruik"	REAL,
-	"datetime"	TEXT NOT NULL DEFAULT (strftime('%Y-%m-%d %H:%M:%S', 'now', '+02:00')),
-	PRIMARY KEY("huisID", "kamerID", "userID", "datetime"),
-	FOREIGN KEY("huisID") REFERENCES "huis"("huisID"),
-	FOREIGN KEY("kamerID") REFERENCES "kamer"("kamerID")
-	FOREIGN KEY("userID") REFERENCES "user"("userID")
+    "verbruikID" INTEGER PRIMARY KEY AUTOINCREMENT,
+    "huisID" INTEGER,
+    "kamerID" INTEGER,
+    "userID" INTEGER,
+    "verbruik" REAL,
+	"datetime" DATETIME DEFAULT (DATETIME('now', '+2 hours')),
+    UNIQUE ("verbruikID","huisID", "kamerID", "userId")
 );
+
+
 
 INSERT INTO "huis" ("huisnaam") VALUES ('van doornveste');
 INSERT INTO "kamer" ("huisID", "kamernaam") VALUES (1,'woonkamer');

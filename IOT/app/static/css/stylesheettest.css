@@ -510,3 +510,27 @@ input[type=submit] {
   .form-container {
     width: 300px;
   }
+  .form-section {
+    position: absolute;
+    width: 400px;
+    height: 300px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: transform 0.5s, opacity 0.5s, visibility 0.5s;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .form-section.active {
+    transform: translate(-50%, -50%);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .form-section.previous {
+    transform: translate(-150%, -50%);
+  }
+
+  .form-section.next {
+    transform: translate(50%, -50%);}
