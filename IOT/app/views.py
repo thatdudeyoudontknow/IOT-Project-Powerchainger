@@ -93,7 +93,6 @@ def register():
     return render_template('public/registreren.html', form=form)
 
 
-
 @app.route('/huisconfig', methods=['GET', 'POST'])
 def huisconfig():
     form = HuisForm()
@@ -120,25 +119,20 @@ def huisconfig():
         db.session.add(kamer)
         db.session.commit()
 
-        # Call the insert_hku() function to insert the huisID and kamerID into the HKU table
-        insert_hku(current_user.id, huis.huisID, kamer.kamerID)
+        # hku = HKU(
+        #     huisID=huis.huisID,
+        #     kamerID=kamer.kamerID,
+        #     userID=current_user.id 
+        # )
+
+        # # Add the HKU to the database
+        # db.session.add(hku)
+        # db.session.commit()
 
         flash('de registratie is gelukt', 'success')
 
+
     return render_template('public/huisconfig.html', form=form, kamer_form=kamer_form, name=current_user)
-
-def insert_hku(user_id, huis_huisID, kamer_kamerID):
-    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
-    conn = sqlite3.connect(database_path)
-    cursor = conn.cursor()
-
-    # Insert the values into the 'HKU' table
-    cursor.execute('INSERT INTO HKU (huisID, kamerID, userID) VALUES (?, ?, ?)',
-                   (huis_huisID, kamer_kamerID, user_id))
-
-    # Commit the changes and close the connection
-    conn.commit()
-    conn.close()
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -456,30 +450,6 @@ def accept_decline_invitation(invitation_id):
     cursor.close()
     conn.close()
 
-# -----------------------------------------------------------------------------------
-# zorg dat de kamerID en huisID in hku word gezet
-
-@app.route('/insert_hku', methods=['POST'])
-def insert_hku():
-        # Connect to the SQLite database
-    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
-    conn = sqlite3.connect(database_path)
-    cursor = conn.cursor()
-
-    # Get the current user ID from the request (you may need to modify this depending on your authentication setup)
-    current_user_id = request.form.get('current_user_id')
-
-    # Query the 'huis' table to get the huisID based on the userID
-    cursor.execute('SELECT huisID FROM huis WHERE userID = ?', (current_user_id,))
-    huis_id = cursor.fetchone()[0]
-
-    # Query the 'kamer' table to get the kamerID based on the userID
-    cursor.execute('SELECT kamerID FROM kamer WHERE userID = ?', (current_user_id,))
-    kamer_id = cursor.fetchone()[0]
-
-    # Insert the values into the 'HKU' table
-    cursor.execute('INSERT INTO HKU (huisID, kamerID, userId) VALUES (?, ?, ?)',
-                   (huis_id, kamer_id, current_user_id))
-
-    # Commit the changes and close the connection
-    conn.commit()
+@app.route("/test")
+def test():
+    return render_template("public/test.html")

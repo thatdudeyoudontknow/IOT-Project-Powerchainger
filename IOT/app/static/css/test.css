@@ -1,0 +1,123 @@
+
+.outline_geel_achtergrond {
+  position: absolute;
+  width: 97%;
+  height: 97%;
+  left: 1.5%;
+  top: 2%;
+  right: 2%;
+  bottom: 2%;
+  background: #F8C232;
+  border-radius: 20px;
+  font-family: monospace;
+  font-weight: 00;
+  font-size: 24px;
+}
+
+.navbar {
+  /* background: gray; */
+  margin: 1%;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.powerchainger_logo {
+  width: 150px; /* Adjust the width as desired */
+  height: auto;
+  margin-right: 10px;
+}
+
+.navlinks {
+  display: inline-block;
+  padding: 12px;
+
+  text-decoration: none;
+  font-size: 24px;
+  line-height: 40px; /* Adjust the line-height to match the logo height */
+  background: #F4F4F4;
+  border-radius: 20px;
+  
+}
+
+.navrechts {
+  display: inline-block;
+  padding: 12px;
+  text-decoration: none;
+  font-size: 24px;
+  line-height: 40px; /* Adjust the line-height to match the logo height */
+  background: #F4F4F4;
+  border-radius: 20px;
+  margin-left: auto;
+  
+}
+
+.navlinks a.active {
+  background: #E5E5E5;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  border-radius: 20px;
+}
+
+.navlinks a:hover {
+  background: #CCCCCC;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  border-radius: 20px; 
+}
+
+.navrechts a.active {
+  background: #E5E5E5;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  border-radius: 20px;
+}
+
+.navrechts a:hover {
+  background: #E5E5E5;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  border-radius: 20px; 
+}
+
+.losse_navbutton {
+  color: #333333;
+  display: inline-block;
+  border-radius: 20px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  text-decoration: none;
+  padding-left: 9px;
+  padding-right: 9px;
+  position: relative; /* Required for positioning pseudo-elements */
+}
+
+.losse_navbutton:not(:first-child)::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 1px;
+  background-color: #000;
+}
+
+.losse_navbutton::before {
+  left: -5px; /* Adjust the positioning as needed */
+}
+
+.losse_navbutton:last-child::before {
+  width: 0.5px; /* Adjust the width as needed */
+}
+
+
+
+
+@media screen and (max-width: 768px) {
+  .navlinks,
+  .navrechts {
+    font-size: 9px;
+    line-height: 20px; /* Adjust the line-height for smaller screens */
+    padding: 4px; /* Adjust the padding for smaller screens */
+  }
+}
+
