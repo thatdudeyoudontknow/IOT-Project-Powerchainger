@@ -134,7 +134,7 @@
   flex-basis: 86%; /* Set width to 50% for bovenblokgroep and onderblokgroep */
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-start;
+  justify-content: flex-end;
 }
 
 .onderblokgroep {
@@ -147,8 +147,6 @@
 .rechtsblokgroep {
   flex-basis: 10%; /* Set width to 50% for bovenblokgroep and onderblokgroep */
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-end;
 }
 
 
