@@ -47,6 +47,9 @@ def graph():
 def vrienden():
     return render_template("public/vrienden.html", name=current_user)
 
+@app.route("/c02")
+def uitstootmeter():
+    return render_template("public/uitstoot.html", name=current_user)
 
 @app.route('/logout')
 @login_required
