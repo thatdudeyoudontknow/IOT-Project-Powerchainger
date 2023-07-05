@@ -128,6 +128,7 @@
 .flexboxgroep {
   display: flex;
   flex-wrap: wrap;
+  
 }
 
 .bovenblokgroep{
@@ -136,12 +137,11 @@
   flex-wrap: wrap;
   justify-content: flex-end;
 }
-
-.onderblokgroep {
-  flex-basis: 70%; /* Set width to 50% for bovenblokgroep and onderblokgroep */
+.sociaalblokgroep {
+  flex: 1;
   display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
+  flex-wrap: wrap; /* Add flex-wrap property */
+  justify-content: space-between;
 }
 
 .rechtsblokgroep {
@@ -158,6 +158,7 @@
 .verbruikperdatum1,
 .bespaard1,
 .sociaal1
+
 {
   display: flex;
   /* justify-content: center; */
@@ -184,6 +185,26 @@
 
 }
 
+
+.huizen1,
+.kamers1,
+.sociaal21 {
+  flex-basis: calc(31% - 20px); /* Adjust flex-basis for equal-sized boxes */
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  background-color: #f4f4f4;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  margin: 0.5%;
+  padding: 20px;
+  height: 29em;
+}
+
+.competitie {
+  text-align: center;
+}
 .verbruikperdatum1 {
   width: 40em;
   height: 20em; 

@@ -1,49 +1,52 @@
 {% extends "public/templates/iot_template.html" %}
 
 {% block main %}
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<div class="huizen">
-    <p class="competitie">huizen</p>
-</div>
+<div class="flexboxgroep">
+    <div class="sociaalblokgroep">
 
-<div class="kamers">
-    <p class="competitie">kamers</p>
-</div>
 
-<div class="sociaal2">
-    <p class="competitie">sociaal</p>
-    <div id="verbruikTable" class="vriendentabel"></div>
-    <div id="popup" class="popup">
-        <div class="bar">
-            Voeg vrienden toe
-            <a class="sluitknop" href="{{url_for('competitie')}}">sluit</a>
+
+      <div class="huizen1">
+        <p class="competitie">huizen</p>
         </div>
-        <form id="searchForm" action="/search" method="POST">
-            <input type="text" name="search_query" class="search-bar" placeholder="zoek op gebruikersnaam">
-            <input type="submit" value="zoek" id="zoek-knop">
-        </form>
-        <div id="searchResults" class="search-results">
-        </div>
-
-    </div>
-
-    <div class="vriend-toevoeg-button">
-        <button id="openPopup">Voeg vrienden toe</button>
-    </div>
-    <h1>vriendschapsverzoeken</h1>
-
     
-    {% if invitations %}
-    {% for invitation in invitations %}
-        <form action="/process_invitation" method="POST">
-            <p>Invited by: {{ invitation.inviter_username }}</p>
-            <input type="hidden" name="verzoek_id" value="{{ invitation.verzoekID }}">
-            <button type="submit" name="action" value="accept">Accept</button>
-            <button type="submit" name="action" value="decline">Decline</button>
-        </form>
-        <hr>
-    {% endfor %}
-{% else %}
-    <p>Geen verzoeken gevonden.</p>
-{% endif %}
+        <div class="kamers1">
+            <p class="competitie">kamers</p>
+        </div>
+
+      <div class="sociaal21">
+        <p class="competitie">sociaal</p>
+        <div id="verbruikTable" class="vriendentabel"></div>
+        <div id="popup" class="popup">
+            <div class="bar">
+                Voeg vrienden toe
+                <a class="sluitknop" href="{{url_for('competitie')}}">sluit</a>
+            </div>
+            <form class="formy" id="searchForm" action="/search" method="POST">
+                <input type="text" name="search_query" class="search-bar" placeholder="zoek op gebruikersnaam">
+                <input type="submit" value="zoek" id="zoek-knop">
+            </form>
+            <div id="searchResults" class="search-results">
+            </div>
+        </div>
+        <div class="vriend-toevoeg-button">
+            <button id="openPopup">Voeg vrienden toe</button>
+        </div>
+        <h1>vriendschapsverzoeken</h1>
+        {% if invitations %}
+        {% for invitation in invitations %}
+            <form action="/process_invitation" method="POST">
+                <p>Invited by: {{ invitation.inviter_username }}</p>
+                <input type="hidden" name="verzoek_id" value="{{ invitation.verzoekID }}">
+                <button type="submit" name="action" value="accept">Accept</button>
+                <button type="submit" name="action" value="decline">Decline</button>
+            </form>
+            <hr>
+        {% endfor %}
+        {% else %}
+        <p>Geen verzoeken gevonden.</p>
+        {% endif %}
+    </div>
+
+</div>
 {% endblock %}
