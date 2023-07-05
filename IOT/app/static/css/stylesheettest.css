@@ -141,87 +141,7 @@ li a {
 /* -------------------------------------------------------------*/
 /* DIV'S */
 
-.verbruikperdatum {
-    position: relative;
-    width: 49%;
-    height: 49%;
-    left: 2%;
-    top: -24%;
 
-    background: #F4F4F4;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 20px;
-}
-
-.bespaard{
-    position: relative;
-    width: 25%;
-    height: 33%;
-    left: 52%;
-    top: -73%;
-
-    background: #F4F4F4;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 20px;
-}
-
-.sociaal {
-    position: relative;
-    width: 20%;
-    height: 84%;
-    left: 78%;
-    top: -106%;
-
-    background: #F4F4F4;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 20px;    
-}
-
-.huidigverbruik{
-    position: relative;
-    width: 25%;
-    height: 33%;
-    left: 2%;
-    top: -139%;
-
-    background: #F4F4F4;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 20px;
-    font-size: 250%;
-    text-align: center;
-}
-
-.ecologischevoetafdruk{
-    position: relative;
-    width: 23%;
-    height: 33%;
-    left: 28%;
-    top: -172%;
-
-    background: #F4F4F4;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 20px;
-}
-
-.tips{
-    position: relative;
-    width: 25%;
-    height: 49%;
-    left: 52%;
-    top: -221%;
-
-    background: #F4F4F4;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 20px;
-}
-
-p.home {
-    text-align: center;
-    color: black;
-    padding: 25px;
-    text-decoration: none;
-    font-size: 1.4vmax;
-}
 
 /* DIV'S */
 /* -------------------------------------------------------------*/
@@ -534,3 +454,39 @@ input[type=submit] {
 
   .form-section.next {
     transform: translate(50%, -50%);}
+
+
+
+
+.formy {
+    max-width: 400px;
+    margin: 0 auto;
+  }
+  
+  .formy-group {
+    margin-bottom: 20px;
+  }
+  
+  label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+  
+  input {
+    width: 100%;
+    padding: 10px;
+    font-size: 16px;
+  }
+  
+  input[type="submit"] {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    cursor: pointer;
+    display: block; /* Add this line */
+    margin: 0 auto; /* Add this line */
+  }
+  input[type="submit"]:hover {
+    background-color: #45a049;
+  }

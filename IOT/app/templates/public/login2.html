@@ -2,31 +2,19 @@
 
 {% block main %}
 
-<div class="outlinelogin">
 
-
-    <div class="container mt-2">
-        <div class="row justify-content-md-center">
-            <div class="col col-lg-3 col-md-8 col-sm-10">
-                <form method="POST">
-                    {{ form.hidden_tag() }}
-                <div class="mb-2">
-                    {{ form.email.label(class="form-label") }} 
-                    {{ form.email(class="form-control") }}
-                </div>
-                <div class="mb-2">
-                    {{ form.password.label(class="form-label") }} 
-                    {{ form.password( class="form-control") }}
-                    </div>
-                    {{ form.submit(class="btn btn-primary") }}
-                </form>
-
-                </a>
-            </div>
-    
-        </div>
-        
-    </div>
-</div>
-
+<div class="formy-group">
+    <form class="formy" method="POST">
+      {{ form.hidden_tag() }}
+      <div class="formy-input">
+        {{ form.email.label(class="form-label") }}
+        {{ form.email(class="form-control") }}
+      </div>
+      <div class="formy-input">
+        {{ form.password.label(class="form-label") }}
+        {{ form.password(class="form-control") }}
+      </div>
+      {{ form.submit(class="form-submit") }}
+    </form>
+  </div>
 {% endblock %}

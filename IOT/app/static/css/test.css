@@ -121,3 +121,93 @@
   }
 }
 
+
+
+
+
+.flexboxgroep {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.bovenblokgroep{
+  flex-basis: 86%; /* Set width to 50% for bovenblokgroep and onderblokgroep */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.onderblokgroep {
+  flex-basis: 70%; /* Set width to 50% for bovenblokgroep and onderblokgroep */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+}
+
+.rechtsblokgroep {
+  flex-basis: 10%; /* Set width to 50% for bovenblokgroep and onderblokgroep */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+
+
+.rechtsblokgroep {
+  flex-grow: 1; /* Allow flexbox to grow and fill remaining space */
+}
+
+.verbruikperdatum1,
+.bespaard1,
+.sociaal1,
+.huidigverbruik1,
+.ecologischevoetafdruk1,
+.tips1 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f4f4f4;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  margin: 0.5%;
+}
+
+.verbruikperdatum1 {
+  width: 40em;
+  height: 20em; 
+}
+
+.bespaard1 {
+  width: 24em;
+  height: 10em; 
+}
+
+.sociaal1 {
+  width: 10em;
+  height: 36em; 
+}
+
+.huidigverbruik1 {
+  flex-basis: 20%; 
+  height: 10em; 
+}
+
+.ecologischevoetafdruk1 {
+  flex-basis: 20%; 
+  height: 10em; 
+}
+
+.tips1 {
+  flex-basis: 20%; 
+  height: 10em; 
+}
+
+
+p.home {
+  text-align: center;
+  color: black;
+  padding: 25px;
+  text-decoration: none;
+  font-size: 1.4vmax;
+  vertical-align: top; /* Align the text to the top */
+}
