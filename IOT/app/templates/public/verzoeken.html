@@ -1,0 +1,15 @@
+<!-- verzoeken.html -->
+
+{% block content %}
+  <h1>Friend Requests</h1>
+
+  {% for invitation in invitations %}
+  <form action="/process_invitation" method="POST">
+    <p>Invited by: {{ invitation.inviter_username }}</p>
+    <input type="hidden" name="verzoek_id" value="{{ invitation.verzoekID }}">
+    <button type="submit" name="action" value="accept">Accept</button>
+    <button type="submit" name="action" value="decline">Decline</button>
+</form>
+<hr>
+{% endfor %}
+{% endblock %}

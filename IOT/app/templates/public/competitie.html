@@ -30,15 +30,20 @@
     <div class="vriend-toevoeg-button">
         <button id="openPopup">Voeg vrienden toe</button>
     </div>
-</div>
-<!-- 
-<div class="invitation">
-    <h4>Invitation from {{ userID }}</h4>
-    <p>Status: {{ invitation_status }}</p>
-    <form action="/accept_decline_invitation/{{ invitation_id }}" method="POST">
-      <input type="submit" name="response" value="Accept">
-      <input type="submit" name="response" value="Decline">
-    </form>
-  </div> -->
+    <h1>vriendschapsverzoeken</h1>
 
+    
+    {% if invitations %}
+    {% for invitation in invitations %}
+        <form action="/process_invitation" method="POST">
+            <p>Invited by: {{ invitation.inviter_username }}</p>
+            <input type="hidden" name="verzoek_id" value="{{ invitation.verzoekID }}">
+            <button type="submit" name="action" value="accept">Accept</button>
+            <button type="submit" name="action" value="decline">Decline</button>
+        </form>
+        <hr>
+    {% endfor %}
+{% else %}
+    <p>Geen verzoeken gevonden.</p>
+{% endif %}
 {% endblock %}

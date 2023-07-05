@@ -31,12 +31,13 @@ CREATE TABLE "user" (
 );
 
 CREATE TABLE "vrienden" (
+    "vriendDBID" INTEGER PRIMARY KEY AUTOINCREMENT,
     "userID" INTEGER,
     "vriendenID" INTEGER,
-    PRIMARY KEY ("vriendenID", "userID"),
     FOREIGN KEY ("userID") REFERENCES "user" ("id"),
     FOREIGN KEY ("vriendenID") REFERENCES "user" ("id")
 );
+
 
 CREATE TABLE "verzoeken" (
     "verzoekID" INTEGER PRIMARY KEY AUTOINCREMENT,

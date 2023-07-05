@@ -34,9 +34,6 @@ from app.forms import RegistrationForm, LoginForm, HuisForm, KamerForm
 def home():
     return render_template("public/home.html", name=current_user)
 
-@app.route("/competitie")
-def competitie():
-    return render_template("public/competitie.html", name=current_user)
 
 @app.route("/bezuinigen")
 def bezuinigen():
@@ -252,15 +249,18 @@ if __name__ == '__main__':
 
 @app.route('/vrienden_verbruik_per_dag')
 def get_total_vrienden():
-    userIDs = [1, 2]  # List of userIDs
-    total_verbruik_per_user = {}
-
     # Get the absolute path of the database file in the current directory
     database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
 
     # Connect to the SQLite database
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
+
+    # Retrieve the userIDs for the current user's friends
+    cursor.execute("SELECT vriendenID, userID FROM vrienden WHERE userID = ?", (current_user.id,))
+    userIDs = cursor.fetchall()
+
+    total_verbruik_per_user = {}
 
     # Execute a query to retrieve the sum of verbruik values for each user and the current day
     query = """
@@ -272,18 +272,21 @@ def get_total_vrienden():
         GROUP BY verbruik.userID
     """.format(user_ids_placeholder=','.join('?' for _ in userIDs))
 
-    cursor.execute(query, userIDs)  # Pass the userIDs as parameters
+    # Flatten the list of userIDs for use as query parameters
+    userIDs_flat = [user_id for user_id, _ in userIDs]
 
-# Fetch the rows containing the sum of verbruik values per user along with usernames
+    cursor.execute(query, userIDs_flat)  # Pass the userIDs_flat as parameters
+
+    # Fetch the rows containing the sum of verbruik values per user along with usernames
     rows = cursor.fetchall()
 
-# Iterate over the rows and store the verbruik per user with usernames
+    # Iterate over the rows and store the verbruik per user with usernames
     for row in rows:
         username = row[0]
         total_verbruik = float(row[1])
         total_verbruik_per_user[username] = total_verbruik
 
-# Close the database connection
+    # Close the database connection
     conn.close()
 
     if total_verbruik_per_user:
@@ -367,10 +370,9 @@ def dagverbruik():
 
 # -----------------------------------------------------------------------------------
 # verzend de vrienden ID's naar de database
-
 @app.route('/process_users', methods=['POST'])
 def process_users():
-    userID = 1 
+    userID = current_user.id
     selected_user_ids = request.form.getlist('userID')
     
     # Connect to the SQLite database
@@ -402,53 +404,116 @@ def process_users():
 
     return redirect(url_for('competitie'))
 
-
 # -----------------------------------------------------------------------------------
-# zorg dat de vriendverzoek ontvangen word en geacepteerd of afgeslagen kan worden
-
-
-@app.route('/accept_decline_invitation/<int:invitation_id>', methods=['GET', 'POST'])
-def accept_decline_invitation(invitation_id):
+# zorg dat de vriendverzoek word weergegeven van de database
+@app.route('/competitie')
+def competitie():
+    userID = current_user.id
+    
     # Connect to the SQLite database
     database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
 
-    # Retrieve the invitation details from the "verzoeken" table
-    cursor.execute("SELECT userID, vriendenID, status FROM verzoeken WHERE verzoekID = ?", (invitation_id,))
-    invitation = cursor.fetchone()
+    # Retrieve the friend requests for the current user based on vriendenID
+    cursor.execute("""
+        SELECT u.username AS inviter_username, v.verzoekID, v.status
+        FROM verzoeken v
+        JOIN user u ON u.id = v.userID
+        WHERE v.vriendenID = ? and v.status = "pending"
+    """, (userID,))
+    columns = [column[0] for column in cursor.description]
+    invitations = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    print(invitations)
 
-    # Check if the invitation exists
-    if invitation is None:
-        return "Invitation not found"
-
-    inviter_id, invitee_id, status = invitation
-
-    if request.method == 'GET':
-        return render_template('verzoek.html', inviter_id=inviter_id, invitee_id=invitee_id)
-
-    elif request.method == 'POST':
-        # Retrieve the user's response (accept or decline) from the form
-        response = request.form.get('response')
-
-        # Update the invitation status in the database based on the response
-        if response == 'accept':
-            new_status = 'accepted'
-        elif response == 'decline':
-            new_status = 'declined'
-        else:
-            return "Invalid response"
-
-        cursor.execute("UPDATE verzoeken SET status = ? WHERE verzoekID = ?", (new_status, invitation_id))
-        conn.commit()
-
-        cursor.close()
-        conn.close()
-
-        return "Invitation response recorded"
-
-    cursor.close()
+    # Close the database connection
     conn.close()
+    
+    # Render the template and pass the invitations and current_user to it
+    return render_template('public/competitie.html', invitations=invitations, name=current_user)
+
+
+# -----------------------------------------------------------------------------------
+# zorg dat de vriendverzoek ontvangen word en geacepteerd of afgeslagen kan worden
+@app.route('/process_invitation', methods=['POST'])
+def process_invitation():
+    # Get the form data
+    verzoek_id = request.form['verzoek_id']
+    action = request.form['action']
+
+    # Connect to the SQLite database
+    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+
+    if action == 'accept':
+        # Perform the necessary actions to accept the invitation
+        inviter_id = accept_invitation(cursor, verzoek_id, current_user.id)
+    elif action == 'decline':
+        # Perform the necessary actions to decline the invitation
+        decline_invitation(cursor, verzoek_id)
+
+    # Commit the changes to the database
+    conn.commit()
+
+    # Close the database connection
+    conn.close()
+
+    return redirect('competitie')
+
+
+def accept_invitation(cursor, verzoek_id, current_user_id):
+    # Fetch the inviter's user ID from the verzoeken table
+    cursor.execute("SELECT userID FROM verzoeken WHERE verzoekID = ?", (verzoek_id,))
+    inviter_id = cursor.fetchone()[0]
+
+    # Perform the necessary actions to accept the invitation
+    # Update the vrienden table to add the friendship
+    cursor.execute("INSERT INTO vrienden (userID, vriendenID) VALUES (?, ?)", (inviter_id, current_user_id ))
+    cursor.execute("INSERT INTO vrienden (userID, vriendenID) VALUES (?, ?)", (current_user_id, inviter_id ))
+
+    # Remove the invitation from the verzoeken table
+    cursor.execute("DELETE FROM verzoeken WHERE verzoekID = ?", (verzoek_id,))
+
+    # Return the inviter's ID
+    return inviter_id
+
+
+def decline_invitation(cursor, verzoek_id):
+    # Perform the necessary actions to decline the invitation
+    # Update the status column in the verzoeken table to 'declined'
+    cursor.execute("UPDATE verzoeken SET status = 'declined' WHERE verzoekID = ?", (verzoek_id,))
+
+
+# -----------------------------------------------------------------------------------
+# zorg dat de data in hku word gezet
+@app.route('/insert_hku', methods=['POST'])
+def insert_hku():
+        # Connect to the SQLite database
+    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+
+    # Get the current user ID from the request (you may need to modify this depending on your authentication setup)
+    current_user_id = request.form.get('current_user_id')
+
+    # Query the 'huis' table to get the huisID based on the userID
+    cursor.execute('SELECT huisID FROM huis WHERE userID = ?', (current_user_id,))
+    huis_id = cursor.fetchone()[0]
+
+    # Query the 'kamer' table to get the kamerID based on the userID
+    cursor.execute('SELECT kamerID FROM kamer WHERE userID = ?', (current_user_id,))
+    kamer_id = cursor.fetchone()[0]
+
+    # Insert the values into the 'HKU' table
+    cursor.execute('INSERT INTO HKU (huisID, kamerID, userId) VALUES (?, ?, ?)',
+                   (huis_id, kamer_id, current_user_id))
+
+    # Commit the changes and close the connection
+    conn.commit()
+
+if __name__ == '__main__':
+    app.run()
 
 @app.route("/test")
 def test():
