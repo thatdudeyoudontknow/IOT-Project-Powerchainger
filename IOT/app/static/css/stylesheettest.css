@@ -235,13 +235,6 @@ p.competitie{
     border-radius: 20px;
 }
 
-p.home {
-    text-align: center;
-    color: black;
-    padding: 25px;
-    text-decoration: none;
-    font-size: 1.4vmax;
-}
 
 
 /* LOGIN */
@@ -264,39 +257,10 @@ div.buttoninlog {
 
 
 
-.chart-container {
-    flex: 1;
-    height: 26em /* Adjust the height as needed */
-}
 
-.button-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-}
 
-.button-container button {
-    margin: 7px 0;
-    margin-right: 2em;
-    background-color: #F8C232;
-    border-radius: 0%;
-    border: none;
-    color: black;
-    text-align: center;
-    display: inline-block;
-    font-size: 16px;
-    font-family: monospace;
-    padding: 20px;
-    text-decoration: none;
-    font-size: 1vmax;
-}
 
-.button-container button:hover {
-    background-color: #e0b231;
-}
-.grafiekblok {
-    display: flex;
-}
+
 
 input[type=submit] {
     position: relative;
@@ -490,3 +454,5 @@ input[type=submit] {
   input[type="submit"]:hover {
     background-color: #45a049;
   }
+
+  
