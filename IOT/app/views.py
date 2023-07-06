@@ -444,29 +444,8 @@ def process_users():
 @app.route('/competitie')
 @login_required
 def competitie():
-    userID = current_user.id
-    
-    # Connect to the SQLite database
-    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
-    conn = sqlite3.connect(database_path)
-    cursor = conn.cursor()
 
-    # Retrieve the friend requests for the current user based on vriendenID
-    cursor.execute("""
-        SELECT u.username AS inviter_username, v.verzoekID, v.status
-        FROM verzoeken v
-        JOIN user u ON u.id = v.userID
-        WHERE v.vriendenID = ? and v.status = "pending"
-    """, (userID,))
-    columns = [column[0] for column in cursor.description]
-    invitations = [dict(zip(columns, row)) for row in cursor.fetchall()]
-    print(invitations)
-
-    # Close the database connection
-    conn.close()
-    
-    # Render the template and pass the invitations and current_user to it
-    return render_template('public/competitie.html', invitations=invitations, name=current_user)
+    return render_template('public/competitie.html', name=current_user)
 
 
 # -----------------------------------------------------------------------------------
@@ -556,6 +535,29 @@ if __name__ == '__main__':
 @app.route("/vrienden")
 @login_required
 def vrienden():
-        
+    userID = current_user.id
+    
+    # Connect to the SQLite database
+    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+
     vriend = Vrienden.query.filter_by(userID=current_user.id).all()
-    return render_template('public/vrienden.html',name=current_user, vriend=vriend)
+    # Retrieve the friend requests for the current user based on vriendenID
+    cursor.execute("""
+        SELECT u.username AS inviter_username, v.verzoekID, v.status
+        FROM verzoeken v
+        JOIN user u ON u.id = v.userID
+        WHERE v.vriendenID = ? and v.status = "pending"
+    """, (userID,))
+    columns = [column[0] for column in cursor.description]
+    invitations = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    print(invitations)
+
+    # Close the database connection
+    conn.close()
+    
+    # Render the template and pass the invitations and current_user to it
+    
+    return render_template('public/vrienden.html', invitations=invitations, name=current_user, vriend=vriend)
+    
