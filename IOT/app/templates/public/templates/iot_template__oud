@@ -27,7 +27,6 @@
               <li><a href="{{url_for('competitie')}}">competitie</a></li>
 
               {% endif %}
-              <li><a href="{{url_for('bezuinigen')}}">bezuinigen</a></li>
             </ul>
         </div>
       </div>
