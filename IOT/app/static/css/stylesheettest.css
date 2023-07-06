@@ -1,10 +1,6 @@
 /* BASE HTML */
 
-html, head, body, div, h1, p {
 
-    padding: 0;
-    font-family: monospace;
-}
 
 body {
     font-size: 14px;
@@ -384,75 +380,122 @@ input[type=submit] {
     margin: 0;
   }
 
-    .container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-  }
+    .formy {
+      max-width: 25em;
+      margin: 0 auto;
+      text-align: center; /* Add this line to center the content horizontally */
+      padding: 2%;
+    }
+    
+    .formy-container {
+      max-width: 25em;
+      margin: 0 auto;
+      align-items: center;
+      background-color: #f4f4f4;
+      box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+      border-radius: 20px;
+      padding: 20px;
+      height: auto;
+    }
 
-  .form-container {
-    width: 300px;
-  }
-  .form-section {
-    position: absolute;
-    width: 400px;
-    height: 300px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    transition: transform 0.5s, opacity 0.5s, visibility 0.5s;
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  .form-section.active {
-    transform: translate(-50%, -50%);
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .form-section.previous {
-    transform: translate(-150%, -50%);
-  }
-
-  .form-section.next {
-    transform: translate(50%, -50%);}
-
-
-
-
-.formy {
-    max-width: 400px;
-    margin: 0 auto;
-  }
-  
-  .formy-group {
-    margin-bottom: 20px;
-  }
-  
-  label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
-  }
-  
-  input {
-    width: 100%;
-    padding: 10px;
-    font-size: 16px;
-  }
+    .form-text{
+      font-size: 1vmax;
+    }
+    
+    label {
+      display: block;
+      margin-bottom: 1%;
+      font-weight: bold;
+      padding: 1;
+    }
+    
+    input {
+      width: 80%; /* Change width to 80% */
+      margin: 0 auto; /* Add this line to center the input boxes within the form block */
+      padding: 10px;
+      font-size: 16px;
+    }
   
   input[type="submit"] {
-    background-color: #4CAF50;
+    background-color: #F8C232;
     color: white;
     border: none;
     cursor: pointer;
     display: block; /* Add this line */
     margin: 0 auto; /* Add this line */
+    margin: auto;
+    margin-top: 10px;
   }
   input[type="submit"]:hover {
-    background-color: #45a049;
+    background-color: #d4a31a;
+  }
+
+  .verbruikTable {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .verbruikTable th {
+    background-color: #f2f2f2;
+    color: #333;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .verbruikTable td {
+    padding: 8px;
+  }
+  
+  .verbruikTable tr:nth-child(even) {
+    background-color: #f9f9f9;
+  }
+  
+  .verbruikTable tr:hover {
+    background-color: #e5e5e5;
+  }
+  
+  .verbruikTable th,
+  .verbruikTable td {
+    border-bottom: 1px solid #ddd;
+  }
+
+
+  .vriendentabelklein {
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+  }
+  
+  /* top bar */
+  .vriendentabelklein th {
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .vriendentabelklein td {
+    padding: 8px;
+  }
+  
+  /* even and odd table colors */
+  .vriendentabelklein tr:nth-child(even) {
+    background-color: #F8C232;
+  }
+  
+  .vriendentabelklein tr:nth-child(odd) {
+    background-color: #f8c332a8;
+  }
+  
+  .vriendentabelklein tr:hover {
+    background-color: #f8c3323b;
+  }
+  
+  /* lines between blocks */
+  .vriendentabelklein th,
+  .vriendentabelklein td {
+    border-bottom: 1px solid #f4f4f4;
   }
 
   

@@ -229,54 +229,91 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
 
-    if (window.location.pathname === '/competitie') {
-
-      var openPopupButton = document.getElementById('openPopup');
-      var popup = document.getElementById('popup');
-      var searchForm = document.getElementById('searchForm');
-      var searchResults = document.getElementById('searchResults');
+    var openPopupButton = document.getElementById('openPopup');
+    var popup = document.getElementById('popup');
+    var searchForm = document.getElementById('searchForm');
+    var searchResults = document.getElementById('searchResults');
   
-
-
-    openPopupButton.addEventListener('click', function() {
-      popup.style.display = 'block';
-    });
-
-
-    searchForm.addEventListener('submit', function(e) {
-      e.preventDefault();
-      var searchQuery = document.getElementsByName('search_query')[0].value;
-
-      // Perform AJAX request to send search query to the server
-      var xhr = new XMLHttpRequest();
-      xhr.open('POST', '/search', true);
-      xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-      xhr.onreadystatechange = function() {
-        if (xhr.readyState === 4 && xhr.status === 200) {
-          searchResults.innerHTML = xhr.responseText;
-        }
-      };
-      xhr.send('search_query=' + encodeURIComponent(searchQuery));
-    });
-
-  $.ajax({
-    url: "/vrienden_verbruik_per_dag",
-    method: "GET",
-    success: function(response) {
-      // Update the HTML content with the received data
-      var tableHtml = "<table>";
-      tableHtml += "<tr><th>naam</th><th>dagverbruik</th></tr>";
-      $.each(response, function(gebruikersnaam, totalVerbruik) {
-        tableHtml += "<tr><td>" + gebruikersnaam + "</td><td>" + totalVerbruik + "</td></tr>";
+    if (openPopupButton && popup && searchForm && searchResults) {
+      openPopupButton.addEventListener('click', function() {
+        popup.style.display = 'block';
       });
-      tableHtml += "</table>";
-      $("#verbruikTable").html(tableHtml);
-    },
-    error: function(xhr, status, error) {
-      console.log("Error:", error);
-    }
-  });
   
+      searchForm.addEventListener('submit', function(e) {
+        e.preventDefault();
+        var searchQuery = document.getElementsByName('search_query')[0].value;
+  
+        // Perform AJAX request to send search query to the server
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/search', true);
+        xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+        xhr.onreadystatechange = function() {
+          if (xhr.readyState === 4 && xhr.status === 200) {
+            searchResults.innerHTML = xhr.responseText;
+          }
+        };
+        xhr.send('search_query=' + encodeURIComponent(searchQuery));
+      });
+    } 
+    console.log("AJAX request to /vrienden_verbruik_per_dag");
+  
+    $.ajax({
+      url: "/vrienden_verbruik_per_dag",
+      method: "GET",
+      
+      success: function(response) {
+        // Update the HTML content with the received data
+        var tableHtml = "<table>";
+        tableHtml += "<tr><th>naam</th><th>dagverbruik</th></tr>";
+        $.each(response, function(gebruikersnaam, totalVerbruik) {
+          tableHtml += "<tr><td>" + gebruikersnaam + "</td><td>" + totalVerbruik + "</td></tr>";
+        });
+        tableHtml += "</table>";
+        $("#verbruikTable").html(tableHtml);
+      },
+      error: function(xhr, status, error) {
+        console.log("Error:", error);
+      }
+    });
 
-    }
+    $.ajax({
+      url: "/vrienden_verbruik_per_dag",
+      method: "GET",
+    
+      success: function(response) {
+        // Update the HTML content with the received data
+        var tableHtml = "<table>";
+        tableHtml += "<tr><th>naam</th><th>dagverbruik</th><th></th></tr>"; // Add an empty header for the delete button
+        $.each(response, function(vriendID, gebruikersnaam, totalVerbruik) {
+          tableHtml += "<tr><td>" + gebruikersnaam + "</td><td>" + totalVerbruik + "</td><td><button class='delete-btn' data-vriend-id='" + vriendID + "'>Delete</button></td></tr>";
+        });
+        tableHtml += "</table>";
+        $("#verbruikTableDelete").html(tableHtml);
+    
+        // Attach event handlers to the delete buttons
+        $(".delete-btn").click(function() {
+          var vriendID = $(this).data("vriend-id");
+          // Perform the delete operation using the vriendID variable
+          $.ajax({
+            url: "/remove_vriend",
+            method: "POST",
+            data: { vriend_id: vriendID },
+            success: function(response) {
+              // Handle the success response, if needed
+              console.log("Friend removed successfully.");
+              // You can update the table or perform any other actions as required
+              // ...
+            },
+            error: function(xhr, status, error) {
+              // Handle the error response, if needed
+              console.log("Error:", error);
+            }
+          });
+        });
+      },
+      error: function(xhr, status, error) {
+        console.log("Error:", error);
+      }
+    });
+    
 });

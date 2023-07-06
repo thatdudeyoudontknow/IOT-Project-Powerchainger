@@ -26,26 +26,27 @@ login_manager.login_view = "login"
 db = SQLAlchemy(app)
 
 
-from app.models import User , Kamer, Huis, HKU
+from app.models import User , Kamer, Huis, HKU, Vrienden
 from app.forms import RegistrationForm, LoginForm, HuisForm, KamerForm
 
 
 @app.route("/")
+@login_required
 def home():
     return render_template("public/home.html", name=current_user)
 
 
 @app.route("/bezuinigen")
+@login_required
 def bezuinigen():
     return render_template("public/bezuinigen.html", name=current_user)
 
 @app.route("/graph")
+@login_required
 def graph():
     return render_template("public/graph.html", name=current_user)
 
-@app.route("/vrienden")
-def vrienden():
-    return render_template("public/vrienden.html", name=current_user)
+
 
 
 @app.route('/logout')
@@ -53,7 +54,7 @@ def vrienden():
 def logout():
     logout_user()
     flash(u'Je bent nu uitgelogd!', 'success')
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -89,45 +90,62 @@ def register():
 
     return render_template('public/registreren.html', form=form)
 
+import traceback
 
 @app.route('/huisconfig', methods=['GET', 'POST'])
+@login_required
 def huisconfig():
-    form = HuisForm()
-    kamer_form = KamerForm()
+    user = current_user  # Assuming you have a way to access the current user
+
+    # Retrieve the user's data from the database
+    huis_data = Huis.query.filter_by(userID=user.id).first()
+    kamer_data = Kamer.query.filter_by(userID=user.id).first()
+
+    # Create form instances and pass the retrieved data to prefill the fields
+    form = HuisForm(obj=huis_data)
+    kamer_form = KamerForm(obj=kamer_data)
 
     if form.validate_on_submit() and kamer_form.validate_on_submit():
-        # Create a new huis instance
-        huis = Huis(
-            woonplaats=form.woonplaats.data,
-            huisnummer=form.huisnummer.data,
-            toevoeging=form.toevoeging.data,
-            straat=form.straat.data,
-            postcode=form.postcode.data
-        )
+        try:
+            # Update the existing huis instance if it exists
+            if huis_data:
+                huis_data.huisnaam= form.huisnaam.data
+                huis_data.woonplaats = form.woonplaats.data
+                huis_data.huisnummer = form.huisnummer.data
+                huis_data.toevoeging = form.toevoeging.data
+                huis_data.straat = form.straat.data
+                huis_data.postcode = form.postcode.data
+            else:
+                # Create a new huis instance
+                huis = Huis(
+                    huisnaam=form.huisnaam.data,
+                    woonplaats=form.woonplaats.data,
+                    huisnummer=form.huisnummer.data,
+                    toevoeging=form.toevoeging.data,
+                    straat=form.straat.data,
+                    postcode=form.postcode.data
+                )
+                db.session.add(huis)
 
-        # Create a new kamer instance
-        kamer = Kamer(
-            huisnummer=kamer_form.huisnummer.data,
-            kamernaam=kamer_form.kamernaam.data
-        )
+            # Update the existing kamer instance if it exists
+            if kamer_data:
+                kamer_data.huisnummer = kamer_form.huisnummer.data
+                kamer_data.kamernaam = kamer_form.kamernaam.data
+            else:
+                # Create a new kamer instance
+                kamer = Kamer(
+                    huisnummer=kamer_form.huisnummer.data,
+                    kamernaam=kamer_form.kamernaam.data
+                )
+                db.session.add(kamer)
 
-        # Add the huis and kamer to the database
-        db.session.add(huis)
-        db.session.add(kamer)
-        db.session.commit()
-
-        # hku = HKU(
-        #     huisID=huis.huisID,
-        #     kamerID=kamer.kamerID,
-        #     userID=current_user.id 
-        # )
-
-        # # Add the HKU to the database
-        # db.session.add(hku)
-        # db.session.commit()
-
-        flash('de registratie is gelukt', 'success')
-
+            db.session.commit()
+            flash('De registratie is gelukt', 'success')
+        except Exception as e:
+            # Log the error message and traceback
+            traceback.print_exc()
+            flash('Er is een fout opgetreden bij het opslaan van de gegevens', 'error')
+            return redirect(url_for('huisconfig'))  # Redirect the user to the form page
 
     return render_template('public/huisconfig.html', form=form, kamer_form=kamer_form, name=current_user)
 
@@ -156,6 +174,7 @@ def login():
     
 
 @app.route("/huidige_woning")
+@login_required
 def get_current_huisnaam():
     userID = current_user.id # Replace with the actual current user ID
 
@@ -185,6 +204,7 @@ def get_current_huisnaam():
 
 # data dat word uit de database gehaald voor de grafiek
 @app.route("/data")
+@login_required
 def get_data():
     userID = current_user.id
     # Connect to the SQLite database
@@ -219,6 +239,7 @@ def get_data():
 # het zoeken van vrienden
 
 @app.route('/search', methods=['POST'])
+@login_required
 def search():
     search_query = request.form['search_query']
 
@@ -248,6 +269,7 @@ if __name__ == '__main__':
 # de verbruik per dag van vrienden laten zien
 
 @app.route('/vrienden_verbruik_per_dag')
+@login_required
 def get_total_vrienden():
     # Get the absolute path of the database file in the current directory
     database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
@@ -293,11 +315,28 @@ def get_total_vrienden():
         return jsonify(total_verbruik_per_user)
     else:
         return "No data found for the current day."
+def vriendenzien():
 
+    vriend = Vrienden.query.filter_by(userID=current_user.id).all()
     
+
+    return render_template('vrienden.html',name=current_user, vriend=vriend)
+
+
+# -----------------------------------------------------------------------------------
+# verwijder vrienden
+@app.route('/remove_friends/<vriend_id>')
+@login_required
+def remove_friends(vriend_id):
+    # Display the vriend_id on the remove_friends page
+    return "Friend with ID {} has been successfully removed.".format(vriend_id)
+
+
+
 # -----------------------------------------------------------------------------------
 # huidig verbruik van de huidige gebruiker
 @app.route('/huidig_verbruik')
+@login_required
 def get_current():
     userID = current_user.id
     # Get the absolute path of the database file in the current directory
@@ -330,6 +369,7 @@ def get_current():
 # -----------------------------------------------------------------------------------
 # verbruik per dag van de huidige gebruiker
 @app.route('/verbruik_per_dag')
+@login_required
 def dagverbruik():
     userID = current_user.id
 
@@ -371,6 +411,7 @@ def dagverbruik():
 # -----------------------------------------------------------------------------------
 # verzend de vrienden ID's naar de database
 @app.route('/process_users', methods=['POST'])
+@login_required
 def process_users():
     userID = current_user.id
     selected_user_ids = request.form.getlist('userID')
@@ -407,6 +448,7 @@ def process_users():
 # -----------------------------------------------------------------------------------
 # zorg dat de vriendverzoek word weergegeven van de database
 @app.route('/competitie')
+@login_required
 def competitie():
     userID = current_user.id
     
@@ -436,6 +478,7 @@ def competitie():
 # -----------------------------------------------------------------------------------
 # zorg dat de vriendverzoek ontvangen word en geacepteerd of afgeslagen kan worden
 @app.route('/process_invitation', methods=['POST'])
+@login_required
 def process_invitation():
     # Get the form data
     verzoek_id = request.form['verzoek_id']
@@ -488,6 +531,7 @@ def decline_invitation(cursor, verzoek_id):
 # -----------------------------------------------------------------------------------
 # zorg dat de data in hku word gezet
 @app.route('/insert_hku', methods=['POST'])
+@login_required
 def insert_hku():
         # Connect to the SQLite database
     database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
@@ -515,6 +559,9 @@ def insert_hku():
 if __name__ == '__main__':
     app.run()
 
-@app.route("/test")
-def test():
-    return render_template("public/test.html")
+@app.route("/vrienden")
+@login_required
+def vrienden():
+        
+    vriend = Vrienden.query.filter_by(userID=current_user.id).all()
+    return render_template('public/vrienden.html',name=current_user, vriend=vriend)

@@ -5,6 +5,7 @@
     <script src="{{ url_for('static', filename='chart.js') }}"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="{{ url_for('static', filename='moment.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link type="text/css" href="{{url_for('static',filename='css/stylesheettest.css')}}" rel="stylesheet">
     <meta charset="utf-8">
@@ -30,14 +31,20 @@
         <a class="losse_navbutton {% if request.path == url_for('competitie') %}active{% endif %}" aria-current="page"
           href="{{ url_for('competitie') }}">Competitie</a>
 
-        <a class="losse_navbutton {% if request.path == url_for('home') %}active{% endif %}" aria-current="page"
+          <a class="losse_navbutton {% if request.path == url_for('bezuinigen') %}active{% endif %}" aria-current="page"
           href="{{ url_for('bezuinigen') }}">Bezuinigen</a>
 
-        <a class="losse_navbutton {% if request.path == url_for('test') %}active{% endif %}" aria-current="page"
-          href="{{ url_for('test') }}">test</a>
+          <a class="losse_navbutton {% if request.path == url_for('vrienden') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('vrienden') }}">vrienden</a>
 
 
       </div>
+      {% for message in get_flashed_messages() %}
+<div class="alert alert-warning">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ message }}
+</div>
+{% endfor %}
       <div class="navrechts">
         {% if current_user.is_authenticated %}
           
