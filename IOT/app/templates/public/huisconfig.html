@@ -32,12 +32,9 @@
         {{ form.postcode(class="form-control", placeholder="Postcode", value=form.postcode.data if form.postcode.data is not none else '') }}
     </div>
 
+
+
     <!-- Include the KamerForm fields within the same form -->
-    <div class="form-text">
-        {{ kamer_form.huisnummer.label(class="form-label") }}
-        {% set huisnummer_value =  kamer_form.huisnummer.data if kamer_form.huisnummer.data is not none else '' %}
-        {{ kamer_form.huisnummer(class="form-control", placeholder="huisnummer", value=huisnummer_value) }}
-    </div>
     <div class="form-text">
         {{ kamer_form.kamernaam.label(class="form-label") }}
         {% set kamernaam_value =  kamer_form.kamernaam.data if kamer_form.kamernaam.data is not none else '' %}
