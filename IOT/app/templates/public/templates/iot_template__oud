@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="nl">
+
+  <head>
+    <script src="{{ url_for('static', filename='chart.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script src="{{ url_for('static', filename='moment.js') }}"></script>
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <link type="text/css" href="{{url_for('static',filename='css/stylesheettest.css')}}" rel="stylesheet">
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  </head>
+
+
+  <body>
+
+    <div class="outline">
+
+      <img class="logo" src="https://www.powerchainger.nl/wp-content/uploads/powerchainger-logo.svg">
+
+      <!-- Topbar -->
+      <div class="top">
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul>
+              <li><a href="{{url_for('home')}}">home</a></li>
+              {% if current_user.is_authenticated %}
+              <li><a href="{{url_for('competitie')}}">competitie</a></li>
+
+              {% endif %}
+              <li><a href="{{url_for('bezuinigen')}}">bezuinigen</a></li>
+            </ul>
+        </div>
+      </div>
+      <!-- Topbar -->
+
+      
+      <!-- Top searchbar -->
+        <div class="loggenbox">
+          <div class="search">
+          {% if current_user.is_authenticated %}
+          <li><a class="nav-link" href="{{ url_for('logout') }}">Uitloggen</a></li>
+          {% else %}
+            <li><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
+            <li><a class="nav-link" href="{{ url_for('register') }}">Registreren</a></li>
+            {% endif %}
+          </div>
+        </div>
+
+      <!-- Top searchbar -->
+
+
+      <!-- Top inlog -->
+        <div class="inlog" id="navbarNav">
+          <ul>
+            {% if current_user.is_authenticated %}
+            <li><a class ="welkom" href="{{ url_for('huisconfig')}}">{{ name }}</a></li>
+          {% else %}
+          <li><a class="nav-link">Welkom</a></li>
+            {% endif %}
+          </ul>
+        </div>
+      <!-- Top inlog -->
+
+
+
+      {%block main%} {%endblock%}
+      
+
+    </div class="outline">
+
+  </body>
+
+
+</html>

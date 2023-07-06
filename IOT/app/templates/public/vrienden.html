@@ -1,0 +1,44 @@
+{%extends "public/templates/iot_template.html"%}
+
+
+{%block main%}
+<div class="vriendenbox">
+  <div class="vrienden">
+<h1>Vrienden Verbruik</h1>
+<div id="verbruikTableDelete" class="vriendentabel"></div>
+
+</div>
+  <div class="vrienden">
+    <p class="titel">vriendschapsverzoeken</p>
+    {% if invitations %}
+    {% for invitation in invitations %}
+        <form action="/process_invitation" method="POST">
+            <p>Invited by: {{ invitation.inviter_username }}</p>
+            <input type="hidden" name="verzoek_id" value="{{ invitation.verzoekID }}">
+            <button type="submit" name="action" value="accept">Accept</button>
+            <button type="submit" name="action" value="decline">Decline</button>
+        </form>
+        <hr>
+    {% endfor %}
+    {% else %}
+    <p class="home">Geen vriendschaps verzoeken gevonden.</p>
+    {% endif %}
+    <div id="popup" class="popup">
+      <div class="bar">
+          Voeg vrienden toe
+          <a class="sluitknop" href="{{url_for('vrienden')}}">sluit</a>
+      </div>
+      <form class="formy" id="searchForm" action="/search" method="POST">
+          <input type="text" name="search_query" class="search-bar" placeholder="zoek op gebruikersnaam">
+          <input type="submit" value="zoek" id="zoek-knop">
+      </form>
+      <div id="searchResults" class="search-results">
+      </div>
+    </div>
+    <div class="vriend-toevoeg-button">
+        <button id="openPopup">Voeg vrienden toe</button>
+    </div>
+  
+  </div>
+</div>
+{%endblock%}
