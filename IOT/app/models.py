@@ -19,7 +19,7 @@ class HKU(db.Model):
 class Huis(db.Model):
     __tablename__ ='huis'
 
-    huisID = db.Column(db.Integer(), primary_key=True)
+    huisID = db.Column(db.Integer(), primary_key=True, autoincrement=True)
     userID = db.Column(db.String(100), nullable=False)
     huisnaam = db.Column(db.String(40), nullable=True)
     woonplaats = db.Column(db.String(40), nullable=False)
@@ -39,7 +39,7 @@ class Huis(db.Model):
 
 
 class Kamer(db.Model):
-    kamerID = db.Column(db.Integer, primary_key=True)
+    kamerID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     kamernaam = db.Column(db.Text, nullable=True)
     huisnummer = db.Column(db.Integer, nullable=False)
     userID = db.Column(db.Integer)
@@ -90,7 +90,7 @@ class Verzoeken(db.Model):
 class Verbruik(db.Model):
     __tablename__ ='verbruik'
 
-    huisID = db.Column(db.Integer, primary_key=True)
+    huisID = db.Column(db.Integer, primary_key=True, autoincrement=True)
     kamerID = db.Column(db.Integer, primary_key=True)
     userId = db.Column(db.Integer, primary_key=True)
     verbruik = db.Column(db.Float())
