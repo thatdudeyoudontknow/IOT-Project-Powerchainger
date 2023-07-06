@@ -53,8 +53,37 @@ document.addEventListener('DOMContentLoaded', function () {
         console.error('Error:', error);
       });
   }
-  
 
+  function fetchEmissionValue() {
+    axios.get('/verbruik_per_dag')
+      .then(response => {
+        const co2Element = document.getElementById('co2_emissions');
+        const divisionResultElement = document.getElementById('division_result');
+  
+        if (response.data.error) {
+          co2Element.textContent = 'N/A';
+          divisionResultElement.textContent = 'N/A';
+        } else if (response.data.value !== undefined) {
+          const total = response.data.value;
+  
+          const emissionFactor = 0.37; // CO2 emission factor in kg CO2/kWh
+          const dailyCO2Emissions = total * emissionFactor;
+          const divisor = 59; // The number you want to use as the divisor
+          const result = Math.round(dailyCO2Emissions / divisor);
+  
+          co2Element.textContent = `${dailyCO2Emissions.toFixed(2)} kg CO2`;
+          divisionResultElement.textContent = ` ${result}`;
+        } else {
+          co2Element.textContent = 'N/A';
+          divisionResultElement.textContent = 'N/A';
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+      });
+  }
+  
+  
   if (document.getElementById('huidige_woning')) {
     fetchHuidigeWoning();
   }
@@ -62,6 +91,8 @@ document.addEventListener('DOMContentLoaded', function () {
   if (document.getElementById('verbruik_per_dag')) {
     fetchTotalValue();
   }
+
+  fetchEmissionValue();
 
   if (document.getElementById('huidig_verbruik')) {
     fetchVerbruik();
