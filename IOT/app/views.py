@@ -26,29 +26,27 @@ login_manager.login_view = "login"
 db = SQLAlchemy(app)
 
 
-from app.models import User , Kamer, Huis, HKU
+from app.models import User , Kamer, Huis, HKU, Vrienden
 from app.forms import RegistrationForm, LoginForm, HuisForm, KamerForm
 
 
 @app.route("/")
+@login_required
 def home():
     return render_template("public/home.html", name=current_user)
 
-@app.route("/competitie")
-def competitie():
-    return render_template("public/competitie.html", name=current_user)
 
 @app.route("/bezuinigen")
+@login_required
 def bezuinigen():
     return render_template("public/bezuinigen.html", name=current_user)
 
 @app.route("/graph")
+@login_required
 def graph():
     return render_template("public/graph.html", name=current_user)
 
-@app.route("/vrienden")
-def vrienden():
-    return render_template("public/vrienden.html", name=current_user)
+
 
 
 @app.route('/logout')
@@ -56,7 +54,7 @@ def vrienden():
 def logout():
     logout_user()
     flash(u'Je bent nu uitgelogd!', 'success')
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -92,45 +90,62 @@ def register():
 
     return render_template('public/registreren.html', form=form)
 
+import traceback
 
 @app.route('/huisconfig', methods=['GET', 'POST'])
+@login_required
 def huisconfig():
-    form = HuisForm()
-    kamer_form = KamerForm()
+    user = current_user  # Assuming you have a way to access the current user
+
+    # Retrieve the user's data from the database
+    huis_data = Huis.query.filter_by(userID=user.id).first()
+    kamer_data = Kamer.query.filter_by(userID=user.id).first()
+
+    # Create form instances and pass the retrieved data to prefill the fields
+    form = HuisForm(obj=huis_data)
+    kamer_form = KamerForm(obj=kamer_data)
 
     if form.validate_on_submit() and kamer_form.validate_on_submit():
-        # Create a new huis instance
-        huis = Huis(
-            woonplaats=form.woonplaats.data,
-            huisnummer=form.huisnummer.data,
-            toevoeging=form.toevoeging.data,
-            straat=form.straat.data,
-            postcode=form.postcode.data
-        )
+        try:
+            # Update the existing huis instance if it exists
+            if huis_data:
+                huis_data.huisnaam= form.huisnaam.data
+                huis_data.woonplaats = form.woonplaats.data
+                huis_data.huisnummer = form.huisnummer.data
+                huis_data.toevoeging = form.toevoeging.data
+                huis_data.straat = form.straat.data
+                huis_data.postcode = form.postcode.data
+            else:
+                # Create a new huis instance
+                huis = Huis(
+                    huisnaam=form.huisnaam.data,
+                    woonplaats=form.woonplaats.data,
+                    huisnummer=form.huisnummer.data,
+                    toevoeging=form.toevoeging.data,
+                    straat=form.straat.data,
+                    postcode=form.postcode.data
+                )
+                db.session.add(huis)
 
-        # Create a new kamer instance
-        kamer = Kamer(
-            huisnummer=kamer_form.huisnummer.data,
-            kamernaam=kamer_form.kamernaam.data
-        )
+            # Update the existing kamer instance if it exists
+            if kamer_data:
+                kamer_data.huisnummer = kamer_form.huisnummer.data
+                kamer_data.kamernaam = kamer_form.kamernaam.data
+            else:
+                # Create a new kamer instance
+                kamer = Kamer(
+                    huisnummer=kamer_form.huisnummer.data,
+                    kamernaam=kamer_form.kamernaam.data
+                )
+                db.session.add(kamer)
 
-        # Add the huis and kamer to the database
-        db.session.add(huis)
-        db.session.add(kamer)
-        db.session.commit()
-
-        # hku = HKU(
-        #     huisID=huis.huisID,
-        #     kamerID=kamer.kamerID,
-        #     userID=current_user.id 
-        # )
-
-        # # Add the HKU to the database
-        # db.session.add(hku)
-        # db.session.commit()
-
-        flash('de registratie is gelukt', 'success')
-
+            db.session.commit()
+            flash('De registratie is gelukt', 'success')
+        except Exception as e:
+            # Log the error message and traceback
+            traceback.print_exc()
+            flash('Er is een fout opgetreden bij het opslaan van de gegevens', 'error')
+            return redirect(url_for('huisconfig'))  # Redirect the user to the form page
 
     return render_template('public/huisconfig.html', form=form, kamer_form=kamer_form, name=current_user)
 
@@ -159,6 +174,7 @@ def login():
     
 
 @app.route("/huidige_woning")
+@login_required
 def get_current_huisnaam():
     userID = current_user.id # Replace with the actual current user ID
 
@@ -188,6 +204,7 @@ def get_current_huisnaam():
 
 # data dat word uit de database gehaald voor de grafiek
 @app.route("/data")
+@login_required
 def get_data():
     userID = current_user.id
     # Connect to the SQLite database
@@ -222,6 +239,7 @@ def get_data():
 # het zoeken van vrienden
 
 @app.route('/search', methods=['POST'])
+@login_required
 def search():
     search_query = request.form['search_query']
 
@@ -251,16 +269,20 @@ if __name__ == '__main__':
 # de verbruik per dag van vrienden laten zien
 
 @app.route('/vrienden_verbruik_per_dag')
+@login_required
 def get_total_vrienden():
-    userIDs = [1, 2]  # List of userIDs
-    total_verbruik_per_user = {}
-
     # Get the absolute path of the database file in the current directory
     database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
 
     # Connect to the SQLite database
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
+
+    # Retrieve the userIDs for the current user's friends
+    cursor.execute("SELECT vriendenID, userID FROM vrienden WHERE userID = ?", (current_user.id,))
+    userIDs = cursor.fetchall()
+
+    total_verbruik_per_user = {}
 
     # Execute a query to retrieve the sum of verbruik values for each user and the current day
     query = """
@@ -272,29 +294,49 @@ def get_total_vrienden():
         GROUP BY verbruik.userID
     """.format(user_ids_placeholder=','.join('?' for _ in userIDs))
 
-    cursor.execute(query, userIDs)  # Pass the userIDs as parameters
+    # Flatten the list of userIDs for use as query parameters
+    userIDs_flat = [user_id for user_id, _ in userIDs]
 
-# Fetch the rows containing the sum of verbruik values per user along with usernames
+    cursor.execute(query, userIDs_flat)  # Pass the userIDs_flat as parameters
+
+    # Fetch the rows containing the sum of verbruik values per user along with usernames
     rows = cursor.fetchall()
 
-# Iterate over the rows and store the verbruik per user with usernames
+    # Iterate over the rows and store the verbruik per user with usernames
     for row in rows:
         username = row[0]
         total_verbruik = float(row[1])
         total_verbruik_per_user[username] = total_verbruik
 
-# Close the database connection
+    # Close the database connection
     conn.close()
 
     if total_verbruik_per_user:
         return jsonify(total_verbruik_per_user)
     else:
         return "No data found for the current day."
+def vriendenzien():
 
+    vriend = Vrienden.query.filter_by(userID=current_user.id).all()
     
+
+    return render_template('vrienden.html',name=current_user, vriend=vriend)
+
+
+# -----------------------------------------------------------------------------------
+# verwijder vrienden
+@app.route('/remove_friends/<vriend_id>')
+@login_required
+def remove_friends(vriend_id):
+    # Display the vriend_id on the remove_friends page
+    return "Friend with ID {} has been successfully removed.".format(vriend_id)
+
+
+
 # -----------------------------------------------------------------------------------
 # huidig verbruik van de huidige gebruiker
 @app.route('/huidig_verbruik')
+@login_required
 def get_current():
     userID = current_user.id
     # Get the absolute path of the database file in the current directory
@@ -327,6 +369,7 @@ def get_current():
 # -----------------------------------------------------------------------------------
 # verbruik per dag van de huidige gebruiker
 @app.route('/verbruik_per_dag')
+@login_required
 def dagverbruik():
     userID = current_user.id
 
@@ -367,10 +410,10 @@ def dagverbruik():
 
 # -----------------------------------------------------------------------------------
 # verzend de vrienden ID's naar de database
-
 @app.route('/process_users', methods=['POST'])
+@login_required
 def process_users():
-    userID = 1 
+    userID = current_user.id
     selected_user_ids = request.form.getlist('userID')
     
     # Connect to the SQLite database
@@ -402,54 +445,123 @@ def process_users():
 
     return redirect(url_for('competitie'))
 
-
 # -----------------------------------------------------------------------------------
-# zorg dat de vriendverzoek ontvangen word en geacepteerd of afgeslagen kan worden
-
-
-@app.route('/accept_decline_invitation/<int:invitation_id>', methods=['GET', 'POST'])
-def accept_decline_invitation(invitation_id):
+# zorg dat de vriendverzoek word weergegeven van de database
+@app.route('/competitie')
+@login_required
+def competitie():
+    userID = current_user.id
+    
     # Connect to the SQLite database
     database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
     conn = sqlite3.connect(database_path)
     cursor = conn.cursor()
 
-    # Retrieve the invitation details from the "verzoeken" table
-    cursor.execute("SELECT userID, vriendenID, status FROM verzoeken WHERE verzoekID = ?", (invitation_id,))
-    invitation = cursor.fetchone()
+    # Retrieve the friend requests for the current user based on vriendenID
+    cursor.execute("""
+        SELECT u.username AS inviter_username, v.verzoekID, v.status
+        FROM verzoeken v
+        JOIN user u ON u.id = v.userID
+        WHERE v.vriendenID = ? and v.status = "pending"
+    """, (userID,))
+    columns = [column[0] for column in cursor.description]
+    invitations = [dict(zip(columns, row)) for row in cursor.fetchall()]
+    print(invitations)
 
-    # Check if the invitation exists
-    if invitation is None:
-        return "Invitation not found"
+    # Close the database connection
+    conn.close()
+    
+    # Render the template and pass the invitations and current_user to it
+    return render_template('public/competitie.html', invitations=invitations, name=current_user)
 
-    inviter_id, invitee_id, status = invitation
 
-    if request.method == 'GET':
-        return render_template('verzoek.html', inviter_id=inviter_id, invitee_id=invitee_id)
+# -----------------------------------------------------------------------------------
+# zorg dat de vriendverzoek ontvangen word en geacepteerd of afgeslagen kan worden
+@app.route('/process_invitation', methods=['POST'])
+@login_required
+def process_invitation():
+    # Get the form data
+    verzoek_id = request.form['verzoek_id']
+    action = request.form['action']
 
-    elif request.method == 'POST':
-        # Retrieve the user's response (accept or decline) from the form
-        response = request.form.get('response')
+    # Connect to the SQLite database
+    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
 
-        # Update the invitation status in the database based on the response
-        if response == 'accept':
-            new_status = 'accepted'
-        elif response == 'decline':
-            new_status = 'declined'
-        else:
-            return "Invalid response"
+    if action == 'accept':
+        # Perform the necessary actions to accept the invitation
+        inviter_id = accept_invitation(cursor, verzoek_id, current_user.id)
+    elif action == 'decline':
+        # Perform the necessary actions to decline the invitation
+        decline_invitation(cursor, verzoek_id)
 
-        cursor.execute("UPDATE verzoeken SET status = ? WHERE verzoekID = ?", (new_status, invitation_id))
-        conn.commit()
+    # Commit the changes to the database
+    conn.commit()
 
-        cursor.close()
-        conn.close()
-
-        return "Invitation response recorded"
-
-    cursor.close()
+    # Close the database connection
     conn.close()
 
-@app.route("/test")
-def test():
-    return render_template("public/test.html")
+    return redirect('competitie')
+
+
+def accept_invitation(cursor, verzoek_id, current_user_id):
+    # Fetch the inviter's user ID from the verzoeken table
+    cursor.execute("SELECT userID FROM verzoeken WHERE verzoekID = ?", (verzoek_id,))
+    inviter_id = cursor.fetchone()[0]
+
+    # Perform the necessary actions to accept the invitation
+    # Update the vrienden table to add the friendship
+    cursor.execute("INSERT INTO vrienden (userID, vriendenID) VALUES (?, ?)", (inviter_id, current_user_id ))
+    cursor.execute("INSERT INTO vrienden (userID, vriendenID) VALUES (?, ?)", (current_user_id, inviter_id ))
+
+    # Remove the invitation from the verzoeken table
+    cursor.execute("DELETE FROM verzoeken WHERE verzoekID = ?", (verzoek_id,))
+
+    # Return the inviter's ID
+    return inviter_id
+
+
+def decline_invitation(cursor, verzoek_id):
+    # Perform the necessary actions to decline the invitation
+    # Update the status column in the verzoeken table to 'declined'
+    cursor.execute("UPDATE verzoeken SET status = 'declined' WHERE verzoekID = ?", (verzoek_id,))
+
+
+# -----------------------------------------------------------------------------------
+# zorg dat de data in hku word gezet
+@app.route('/insert_hku', methods=['POST'])
+@login_required
+def insert_hku():
+        # Connect to the SQLite database
+    database_path = os.path.join(os.path.dirname(__file__), 'data.sqlite')
+    conn = sqlite3.connect(database_path)
+    cursor = conn.cursor()
+
+    # Get the current user ID from the request (you may need to modify this depending on your authentication setup)
+    current_user_id = request.form.get('current_user_id')
+
+    # Query the 'huis' table to get the huisID based on the userID
+    cursor.execute('SELECT huisID FROM huis WHERE userID = ?', (current_user_id,))
+    huis_id = cursor.fetchone()[0]
+
+    # Query the 'kamer' table to get the kamerID based on the userID
+    cursor.execute('SELECT kamerID FROM kamer WHERE userID = ?', (current_user_id,))
+    kamer_id = cursor.fetchone()[0]
+
+    # Insert the values into the 'HKU' table
+    cursor.execute('INSERT INTO HKU (huisID, kamerID, userId) VALUES (?, ?, ?)',
+                   (huis_id, kamer_id, current_user_id))
+
+    # Commit the changes and close the connection
+    conn.commit()
+
+if __name__ == '__main__':
+    app.run()
+
+@app.route("/vrienden")
+@login_required
+def vrienden():
+        
+    vriend = Vrienden.query.filter_by(userID=current_user.id).all()
+    return render_template('public/vrienden.html',name=current_user, vriend=vriend)

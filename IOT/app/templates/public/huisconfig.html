@@ -1,52 +1,52 @@
 {%extends "public/templates/iot_template.html"%}
 
 {% block main %}
-<link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/stylesheettest.css') }}">
-{% for message in get_flashed_messages() %}
-<div class="alert alert-warning">
-    <button type="button" class="close" data-dismiss="alert">&times;</button>
-    {{ message }}
-</div>
-{% endfor %}
 
 
-<form id="form" method="POST" action="/huisconfig">
-    <h2>Form 2</h2>
+<div class="formy-container">
+<form class="formy" id="form" method="POST" action="/huisconfig">
+    <h2>Adres</h2>
     {{ form.hidden_tag() }}
-    <div class="mb-2">
+    <div class="form-text">
+        {{ form.huisnaam.label(class="form-label") }}
+        {{ form.huisnaam(class="form-control", placeholder="huisnaam", value=form.huisnaam.data if form.huisnaam.data is not none else '') }}
+    </div>
+    <div class="form-text">
         {{ form.woonplaats.label(class="form-label") }}
-        {{ form.woonplaats(class="form-control") }}
+        {{ form.woonplaats(class="form-control", placeholder="Woonplaats", value=form.woonplaats.data if form.woonplaats.data is not none else '') }}
     </div>
-    <div class="mb-2">
+    <div class="form-text">
         {{ form.huisnummer.label(class="form-label") }}
-        {{ form.huisnummer(class="form-control") }}
+        {{ form.huisnummer(class="form-control", placeholder="Huisnummer", value=form.huisnummer.data if form.huisnummer.data is not none else '') }}
     </div>
-    <div class="mb-2">
+    <div class="form-text">
         {{ form.toevoeging.label(class="form-label") }}
-        {{ form.toevoeging(class="form-control") }}
+        {{ form.toevoeging(class="form-control", placeholder="Toevoeging", value=form.toevoeging.data if form.toevoeging.data is not none else '') }}
     </div>
-    <div class="mb-2">
+    <div class="form-text">
         {{ form.straat.label(class="form-label") }}
-        {{ form.straat(class="form-control") }}
+        {{ form.straat(class="form-control", placeholder="Straat", value=form.straat.data if form.straat.data is not none else '') }}
     </div>
-    <div class="mb-2">
+    <div class="form-text">
         {{ form.postcode.label(class="form-label") }}
-        {{ form.postcode(class="form-control") }}
+        {{ form.postcode(class="form-control", placeholder="Postcode", value=form.postcode.data if form.postcode.data is not none else '') }}
     </div>
 
     <!-- Include the KamerForm fields within the same form -->
-    <div class="mb-2">
+    <div class="form-text">
         {{ kamer_form.huisnummer.label(class="form-label") }}
-        {{ kamer_form.huisnummer(class="form-control") }}
+        {% set huisnummer_value =  kamer_form.huisnummer.data if kamer_form.huisnummer.data is not none else '' %}
+        {{ kamer_form.huisnummer(class="form-control", placeholder="huisnummer", value=huisnummer_value) }}
     </div>
-    <div class="mb-2">
+    <div class="form-text">
         {{ kamer_form.kamernaam.label(class="form-label") }}
-        {{ kamer_form.kamernaam(class="form-control") }}
+        {% set kamernaam_value =  kamer_form.kamernaam.data if kamer_form.kamernaam.data is not none else '' %}
+        {{ kamer_form.kamernaam(class="form-control", placeholder="kamernaam", value=kamernaam_value) }}
     </div>
 
     <input type="submit" value="Submit">
 </form>
-
+</div>
 
 
 

@@ -5,67 +5,69 @@
     <script src="{{ url_for('static', filename='chart.js') }}"></script>
     <script src="{{ url_for('static', filename='script.js') }}"></script>
     <script src="{{ url_for('static', filename='moment.js') }}"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link type="text/css" href="{{url_for('static',filename='css/stylesheettest.css')}}" rel="stylesheet">
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link type="text/css" href="{{url_for('static',filename='css/test.css')}}" rel="stylesheet">
+    <title>IOT Project</title>
   </head>
 
 
-  <body>
 
-    <div class="outline">
-
-      <img class="logo" src="https://www.powerchainger.nl/wp-content/uploads/powerchainger-logo.svg">
-
-      <!-- Topbar -->
-      <div class="top">
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul>
-              <li><a href="{{url_for('home')}}">home</a></li>
-              <li><a href="{{url_for('competitie')}}">competitie</a></li>
-              <li><a href="{{url_for('bezuinigen')}}">bezuinigen</a></li>
-            </ul>
-        </div>
+<body>
+  <div class="outline_geel_achtergrond">
+    <nav class="navbar">
+      <div class="logo_site">
+        <img class="powerchainger_logo" alt="powerchainger_logo"
+          src="https://www.powerchainger.nl/wp-content/uploads/powerchainger-logo.svg">
       </div>
-      <!-- Topbar -->
+      <div class="navlinks">
 
-      
-      <!-- Top searchbar -->
-        <div class="loggenbox">
-          <div class="search">
-          {% if current_user.is_authenticated %}
-          <li><a class="nav-link" href="{{ url_for('logout') }}">Uitloggen</a></li>
-          {% else %}
-            <li><a class="nav-link" href="{{ url_for('login') }}">Login</a></li>
-            <li><a class="nav-link" href="{{ url_for('register') }}">Registreren</a></li>
-            {% endif %}
-          </div>
-        </div>
+        <a class="losse_navbutton {% if request.path == url_for('home') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('home') }}">Home</a>
 
-      <!-- Top searchbar -->
+        <a class="losse_navbutton {% if request.path == url_for('competitie') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('competitie') }}">Competitie</a>
+
+          <a class="losse_navbutton {% if request.path == url_for('bezuinigen') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('bezuinigen') }}">Bezuinigen</a>
+
+          <a class="losse_navbutton {% if request.path == url_for('vrienden') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('vrienden') }}">vrienden</a>
 
 
-      <!-- Top inlog -->
-        <div class="inlog" id="navbarNav">
-          <ul>
-            {% if current_user.is_authenticated %}
-            <li><a class ="welkom" href="{{ url_for('huisconfig')}}">{{ name }}</a></li>
-          {% else %}
-          <li><a class="nav-link">Welkom</a></li>
-            {% endif %}
-          </ul>
-        </div>
-      <!-- Top inlog -->
+      </div>
+      {% for message in get_flashed_messages() %}
+<div class="alert alert-warning">
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+    {{ message }}
+</div>
+{% endfor %}
+      <div class="navrechts">
+        {% if current_user.is_authenticated %}
+          
+        <a class="losse_navbutton {% if request.path == url_for('huisconfig') %}active{% endif %}" aria-current="page"
+        href="{{ url_for('huisconfig') }}">{{ name }}</a>
 
+        <a class="losse_navbutton {% if request.path == url_for('logout') %}active{% endif %}" aria-current="page"
+        href="{{ url_for('logout') }}">Logout</a>
+        {% else %}
 
+        <a class="losse_navbutton {% if request.path == url_for('login') %}active{% endif %}" aria-current="page"
+        href="{{ url_for('login') }}">Login</a>
 
-      {%block main%} {%endblock%}
-      
+        <a class="losse_navbutton {% if request.path == url_for('register') %}active{% endif %}" aria-current="page"
+        href="{{ url_for('register') }}">Registreren</a>
+      {% endif %}
 
-    </div class="outline">
+      </div>
+    </nav>
 
-  </body>
-
+    {%block main%}  {%endblock%}
+  </div>
+        
+</body>
 
 </html>

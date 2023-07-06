@@ -123,3 +123,201 @@
   }
 }
 
+
+
+
+
+.flexboxgroep {
+  display: flex;
+  flex-wrap: wrap;
+  
+}
+
+.bovenblokgroep{
+  flex-basis: 86%; /* Set width to 50% for bovenblokgroep and onderblokgroep */
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.sociaalblokgroep {
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap; /* Add flex-wrap property */
+  justify-content: space-between;
+}
+
+.rechtsblokgroep {
+  flex-basis: 10%; /* Set width to 50% for bovenblokgroep and onderblokgroep */
+  display: flex;
+}
+
+
+
+.rechtsblokgroep {
+  flex-grow: 1; /* Allow flexbox to grow and fill remaining space */
+}
+
+.verbruikperdatum1,
+.bespaard1,
+.sociaal1
+
+{
+  display: flex;
+  /* justify-content: center; */
+  flex-direction: column;
+  align-items: center;
+  background-color: #f4f4f4;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  margin: 0.5%;
+}
+
+
+.huidigverbruik1,
+.ecologischevoetafdruk1,
+.tips1 {
+  display: flex;
+  /* justify-content: center; */
+  flex-direction: column;
+  align-items: center;
+  background-color: #f4f4f4;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  margin: 0.5%;
+
+}
+
+
+.huizen1,
+.kamers1,
+.sociaal21 {
+  flex-basis: calc(31% - 20px); /* Adjust flex-basis for equal-sized boxes */
+  display: flex;
+  flex-direction: column;
+
+  align-items: center;
+  background-color: #f4f4f4;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  margin: 0.5%;
+  padding: 20px;
+  height: 29em;
+}
+
+.competitie {
+  text-align: center;
+}
+.verbruikperdatum1 {
+  width: 40em;
+  height: 20em; 
+}
+
+.bespaard1 {
+  width: 19.7em;
+  height: 10em;
+}
+
+.sociaal1 {
+  width: 10.5em;
+  height: 31.5em; 
+  justify-content: center;
+}
+
+.huidigverbruik1 {
+  width: 24em;
+  height: 16em; 
+}
+
+.ecologischevoetafdruk1 {
+  flex-basis: 19.7em; 
+  height: 10em; 
+}
+
+.tips1 {
+  flex-basis: 24em; 
+  height: 15em; 
+  margin-top: -4em;
+}
+
+.home {
+  text-align: center;
+  color: black;
+  text-decoration: none;
+  font-size: 1.4vmax;
+  vertical-align: top; /* Align the text to the top */
+}
+.vriendenbox {
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  margin: 0;
+}
+.vrienden {
+  /* align-items: center; */
+  background-color: #f4f4f4;
+  box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  border-radius: 20px;
+  margin: 0.5%;
+  padding: 20px;
+  height: 29em;
+}
+  
+.titel {
+  text-align: center;
+  color: black;
+  text-decoration: none;
+  font-size: 2vmax;
+  font-weight: bold;
+  vertical-align: top; /* Align the text to the top */
+}
+
+
+canvas {
+  width: 100%;
+  height: 100%;
+}
+
+
+.chart-container {
+  flex: 1; /* Use flex: 1 to make chart-container fill remaining space */
+  width: 100%;
+}
+.grafiekblok {
+  flex: 1;
+  display: flex;
+  flex-direction: row; /* Change flex-direction to row */
+  align-items: center;
+  justify-content: center;
+  width: 95%; 
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px; /* Adjust the margin as per your preference */
+}
+
+.button-container button {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 7px 0;
+  margin-right: 2em;
+  background-color: #F8C232;
+  border-radius: 0%;
+  border: none;
+  color: black;
+  text-align: center;
+  display: inline-block;
+  font-size: 16px;
+  font-family: monospace;
+  padding: 20px;
+  text-decoration: none;
+  font-size: 1vmax;
+
+}
+
+.button-container button:hover {
+  background-color: #e0b231;
+}
