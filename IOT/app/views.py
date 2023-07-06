@@ -35,12 +35,6 @@ from app.forms import RegistrationForm, LoginForm, HuisForm, KamerForm
 def home():
     return render_template("public/home.html", name=current_user)
 
-
-@app.route("/bezuinigen")
-@login_required
-def bezuinigen():
-    return render_template("public/bezuinigen.html", name=current_user)
-
 @app.route("/graph")
 @login_required
 def graph():

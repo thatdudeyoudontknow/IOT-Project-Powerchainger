@@ -25,7 +25,6 @@ class RegistrationForm(FlaskForm):
         if User.query.filter_by(username=field.data).first():
             raise ValidationError('Deze gebruikersnaam is al in gebruik, probeer een ander naam!')
 
-
 class LoginForm(FlaskForm):
     email = StringField('Email', validators=[DataRequired(), Email()])
     password = PasswordField('wachtwoord', validators=[DataRequired()])
