@@ -66,10 +66,10 @@ document.addEventListener('DOMContentLoaded', function () {
         } else if (response.data.value !== undefined) {
           const total = response.data.value;
   
-          const emissionFactor = 0.5; // CO2 emission factor in kg CO2/kWh
+          const emissionFactor = 0.37; // CO2 emission factor in kg CO2/kWh
           const dailyCO2Emissions = total * emissionFactor;
-          const divisor = 10; // The number you want to use as the divisor
-          const result = dailyCO2Emissions % divisor;
+          const divisor = 59; // The number you want to use as the divisor
+          const result = Math.round(dailyCO2Emissions / divisor);
   
           co2Element.textContent = `${dailyCO2Emissions.toFixed(2)} kg CO2`;
           divisionResultElement.textContent = ` ${result}`;
