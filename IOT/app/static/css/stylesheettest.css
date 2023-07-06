@@ -498,4 +498,43 @@ input[type=submit] {
     border-bottom: 1px solid #f4f4f4;
   }
 
+
+  .vriendentabel {
+    flex: 1;
+    width: 100%;
+    max-width: 100%;
+    border-collapse: collapse;
+  }
+  
+  /* top bar */
+  .vriendentabel th {
+    background-color: #f4f4f4;
+    color: #333;
+    padding: 8px;
+    text-align: left;
+  }
+  
+  .vriendentabel td {
+    padding: 8px;
+  }
+  
+  /* even and odd table colors */
+  .vriendentabel tr:nth-child(even) {
+    background-color: #F8C232;
+  }
+  
+  .vriendentabel tr:nth-child(odd) {
+    background-color: #f8c332a8;
+  }
+  
+  .vriendentabel tr:hover {
+    background-color: #f8c3323b;
+  }
+  
+  /* lines between blocks */
+  .vriendentabel th,
+  .vriendentabel td {
+    border-bottom: 1px solid #f4f4f4;
+  }
+
   
