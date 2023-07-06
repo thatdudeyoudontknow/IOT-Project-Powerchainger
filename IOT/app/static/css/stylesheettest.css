@@ -417,7 +417,6 @@ input[type=submit] {
     }
   
   input[type="submit"] {
-    background-color: #F8C232;
     color: white;
     border: none;
     cursor: pointer;
