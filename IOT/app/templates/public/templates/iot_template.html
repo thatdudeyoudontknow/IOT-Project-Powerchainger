@@ -28,8 +28,11 @@
         <a class="losse_navbutton {% if request.path == url_for('home') %}active{% endif %}" aria-current="page"
           href="{{ url_for('home') }}">Home</a>
 
+        <a class="losse_navbutton {% if request.path == url_for('competitie') %}active{% endif %}" aria-current="page"
+          href="{{ url_for('competitie') }}">Competitie</a>
+
           <a class="losse_navbutton {% if request.path == url_for('vrienden') %}active{% endif %}" aria-current="page"
-          href="{{ url_for('vrienden') }}">Vrienden</a>
+          href="{{ url_for('vrienden') }}">vrienden</a>
 
 
       </div>

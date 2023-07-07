@@ -23,6 +23,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul>
               <li><a href="{{url_for('home')}}">home</a></li>
+              {% if current_user.is_authenticated %}
+              <li><a href="{{url_for('competitie')}}">competitie</a></li>
+
+              {% endif %}
             </ul>
         </div>
       </div>

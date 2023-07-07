@@ -553,7 +553,7 @@ def insert_hku():
 if __name__ == '__main__':
     app.run()
 
-@app.route("/Vrienden")
+@app.route("/vrienden")
 @login_required
 def vrienden():
         
