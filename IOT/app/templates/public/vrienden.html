@@ -4,8 +4,8 @@
 {%block main%}
 <div class="vriendenbox">
   <div class="vrienden">
-<h1>Vrienden Verbruik</h1>
-<div id="verbruikTableDelete" class="vriendentabel"></div>
+  <p class="titel">Vrienden overzicht</p>
+<div id="verbruikTable" class="vriendentabel"></div>
 
 </div>
   <div class="vrienden">
@@ -22,6 +22,7 @@
     {% endfor %}
     {% else %}
     <p class="home">Geen vriendschaps verzoeken gevonden.</p>
+    <div class="vrienden-hr"></div>
     {% endif %}
     <div id="popup" class="popup">
       <div class="bar">

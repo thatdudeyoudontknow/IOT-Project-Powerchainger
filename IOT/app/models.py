@@ -69,7 +69,7 @@ class User(db.Model, UserMixin):
         return check_password_hash(self.password_hash, password)
 
     def __repr__(self):
-        return f"Welkom, {self.username}"
+        return f"Account, {self.username}"
 
 class Vrienden(db.Model):
     userID = db.Column(db.Integer, db.ForeignKey('user.id'), primary_key=True)

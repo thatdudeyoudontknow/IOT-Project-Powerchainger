@@ -417,7 +417,6 @@ input[type=submit] {
     }
   
   input[type="submit"] {
-    background-color: #F8C232;
     color: white;
     border: none;
     cursor: pointer;
@@ -446,6 +445,12 @@ input[type=submit] {
     padding: 8px;
   }
   
+  .vrienden-hr {
+    border: none;
+    border-top: 1px solid #ccc;
+    margin: 10px 0;
+  }
+
   .verbruikTable tr:nth-child(even) {
     background-color: #f9f9f9;
   }
